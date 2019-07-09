@@ -15,9 +15,10 @@ These are
 * a version of GROMACS containing a benchmark tool of ... TODO KTH
 * a GROMACS N-body kernel microbenchmark ... TODO KTH
 * a script to illustrate HADDOCK I/O usage ... TODO UU
-* inputs for CP2K to do ... TODO EPCC
+* a CP2K QM/MM kernel benchmark (code + input data)
+* a set of CP2K whole-application inputs on which the kernel benchmark was based
 
-Further details are foudn in the respective subfolders.
+Further details are found in the respective subfolders.
 
 Feedback and suggestions for further collaboration are warmly invited
 and are best directed to the maintainers named in the respective
