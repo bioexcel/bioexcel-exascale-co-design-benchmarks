@@ -14,7 +14,7 @@ These are
 
 * a version of GROMACS containing a benchmark tool of ... TODO KTH
 * a GROMACS N-body kernel microbenchmark ... TODO KTH
-* a script to illustrate HADDOCK I/O usage ... TODO UU
+* a script to illustrate HADDOCK I/O using a benchmark containing 1M structures
 * a CP2K QM/MM kernel benchmark (code + input data)
 * a set of CP2K whole-application inputs on which the kernel benchmark was based
 
