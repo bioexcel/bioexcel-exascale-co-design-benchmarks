@@ -12,11 +12,15 @@ users of these applications.
 
 These are
 
-* a version of GROMACS containing a benchmark tool of ... TODO KTH
-* a GROMACS N-body kernel microbenchmark ... TODO KTH
-* a script to illustrate HADDOCK I/O using a benchmark containing 1M structures
+* a version of GROMACS containing a benchmark tool of production
+  versions of key CPU pair-interaction kernels
+* one such GROMACS pair-interaction kernel in microbenchmark form
+  suitable for running in a CPU simulator
+* a script to illustrate HADDOCK I/O using a benchmark containing
+  1M structures
 * a CP2K QM/MM kernel benchmark (code + input data)
-* a set of CP2K whole-application inputs on which the kernel benchmark was based
+* a set of CP2K whole-application inputs on which the kernel
+  benchmark was based
 
 Further details are found in the respective subfolders.
 
@@ -24,5 +28,6 @@ Feedback and suggestions for further collaboration are warmly invited
 and are best directed to the maintainers named in the respective
 subdirectories.
 
-The content is made available under the MIT license. It is open and
-may be used freely and for any purpose.
+The content is made available under the MIT license, except where the
+bundled source code declares another free-and-open-source license. It is
+open and may be used freely and for any purpose.
