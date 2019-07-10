@@ -17,5 +17,5 @@ Containing:
 
 ## Maintainer
 
-Arno Proeme (EPCC) <a.proeme(at)epcc(dot)ed(dot)ac(dot)uk>
+Arno Proeme (EPCC) - a.proeme(at)epcc(dot)ed(dot)ac(dot)uk
 
