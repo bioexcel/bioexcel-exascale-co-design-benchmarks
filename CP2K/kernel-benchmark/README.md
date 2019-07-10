@@ -7,12 +7,13 @@ The code chosen for the kernel consists of the CP2K subroutine qmmm_forces_with_
 As well as being motivated by performance profiling results for the whole-application benchmark, the choice of benchmark kernel is also justified with reference to an established recognition in the CP2K QM/MM literature [2] that generally speaking evaluating the electrostatic interaction between QM and MM parts can be as time consuming as solving the QM part itself using DFT methods. As the latter is already the target of wider attention outside of BioExcel, this provides an additional reason for focusing here on computation of the QM/MM potential as a target for performance optimisation and co-design. 
 
 ### References
-[1] https://www.cp2k.org/docs
-[2] An Efficient Real Space Multigrid QM/MM Electrostatic Coupling. Laino, T.; Mohamed, F.; Laio, A.; Parrinello, M.  J. Chem. Theory Comput. 2005, 1, 1176-1184. DOI: 10.1021/ct050123f
-[3] An Efficient Linear-Scaling Electrostatic Coupling for Treating Periodic Boundary Conditions in QM/MM Simulations. Laino, T.; Mohamed, F. Laio, A. and Parrinello, M. J. Chem. Theory Comput. 2006 2 (5), 1370-1378 DOI: 10.1021/ct6001169
-[4] https://www.cp2k.org/performance
-[5] https://repository.prace-ri.eu/git/UEABS/ueabs
+[1] https://www.cp2k.org/docs  
+[2] An Efficient Real Space Multigrid QM/MM Electrostatic Coupling. Laino, T.; Mohamed, F.; Laio, A.; Parrinello, M.  J. Chem. Theory Comput. 2005, 1, 1176-1184. DOI: 10.1021/ct050123f  
+[3] An Efficient Linear-Scaling Electrostatic Coupling for Treating Periodic Boundary Conditions in QM/MM Simulations. Laino, T.; Mohamed, F. Laio, A. and Parrinello, M. J. Chem. Theory Comput. 2006 2 (5), 1370-1378 DOI: 10.1021/ct6001169  
+[4] https://www.cp2k.org/performance  
+[5] https://repository.prace-ri.eu/git/UEABS/ueabs  
 [6] https://www.cp2k.org/dev:profiling
+  
 
 ## How to build
 
