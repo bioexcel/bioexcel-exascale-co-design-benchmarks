@@ -16,9 +16,11 @@ These are
   versions of key CPU pair-interaction kernels
 * one such GROMACS pair-interaction kernel in microbenchmark form
   suitable for running in a CPU simulator
-* a script to illustrate HADDOCK I/O usage ... TODO UU
+* a script to illustrate HADDOCK I/O using a benchmark containing
+  1M structures
 * a CP2K QM/MM kernel benchmark (code + input data)
-* a set of CP2K whole-application inputs on which the kernel benchmark was based
+* a set of CP2K whole-application inputs on which the kernel
+  benchmark was based
 
 Further details are found in the respective subfolders.
 
