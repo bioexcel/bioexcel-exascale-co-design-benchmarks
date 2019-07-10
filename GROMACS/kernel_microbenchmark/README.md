@@ -1,5 +1,4 @@
-GROMACS kernel_microbenchmark tool
-==================================
+# GROMACS kernel_microbenchmark tool
 
 When developing new architectures, CPU designs are first tested in
 simulators. It might be too much effort to build or run the complete,
@@ -39,8 +38,7 @@ capabilities, it is not useful and in many cases impossible to
 pre-generate all data. The setups of interest can be generated with
 little effort by the GROMACS developers in a co-design effort.
 
-Installation
-^^^^^^^^^^^^
+## Installation
 
 The subdirectory contains a simple standalone CMake project that
 requires a standard-compliant C++14 compiler. To build and run, use
@@ -53,8 +51,7 @@ The tool checks for correct results after the kernel completes,
 reporting success or failure to the terminal and a normal UNIX error
 code (0 for success).
 
-Maintainers
-^^^^^^^^^^^
+## Maintainers
 
-Mark Abraham <mjab@kth.se>
+Mark Abraham <mjab at kth.se>
 
