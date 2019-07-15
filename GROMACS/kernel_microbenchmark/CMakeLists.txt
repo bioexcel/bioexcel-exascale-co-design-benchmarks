@@ -15,7 +15,7 @@ add_executable(
     kernel_ref.cpp
     )
 target_include_directories(
-    gromacs_kernel_microbenchmar
+    gromacs_kernel_microbenchmark
     PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
     )
