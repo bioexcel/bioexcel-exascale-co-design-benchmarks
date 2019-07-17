@@ -78,7 +78,7 @@ $ i=250000 ; find dataset-*/. -type f | head -n $i > dataset-250k.file
 And to analyse 1 million models:
 
 ```bash 
-$ i=250000 ; find dataset-*/. -type f | head -n $i > dataset-1M.file
+$ i=1000000 ; find dataset-*/. -type f | head -n $i > dataset-1M.file
 ```
 
 
