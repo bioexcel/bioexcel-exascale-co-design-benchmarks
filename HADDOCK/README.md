@@ -85,7 +85,7 @@ $ i=250000 ; find dataset-*/. -type f | head -n $i > dataset-1M.file
 Execute main code:
 
 ```bash
-$ python calc-batch-hs.py dataset-250k.file
+$ python3 calc-batch-hs.py dataset-250k.file
 ```
 
 
