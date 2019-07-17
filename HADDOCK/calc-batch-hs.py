@@ -12,7 +12,7 @@ Date: 10-July-2019
 
 def create_targetlist(path):
 	""" Get the location of all PDB decoys  """
-	target_list = glob.glob(f'{path}/*.pdb')
+	target_list = glob.glob(path + '/*.pdb')
 	return target_list
 
 
