@@ -59,7 +59,7 @@ For more information about the scoring, please refer to the [HADDOCK Manual](htt
 
 # Download
 
-The datasets (4 of those containing each 250k models) can be downloaded from {LINK PLACEHOLDER}
+The datasets (4 of those containing each 250k models) can be downloaded from [this link](https://zenodo.org/record/3271425)
 
 # Requirements
 
