@@ -73,12 +73,12 @@ Unpack the datasets and create first a file list containing all models to be ana
 For example to analyse 250k models:
 
 ```bash 
-$ ls -U -d dataset-01/* | head -n $i > dataset-250k.file
+$ i=250000 ; find dataset-*/. -type f | head -n $i > dataset-250k.file
 ```
 And to analyse 1 million models:
 
 ```bash 
-$ ls -U -d dataset-0[1-4]/* | head -n $i > dataset-1M.file
+$ i=250000 ; find dataset-*/. -type f | head -n $i > dataset-1M.file
 ```
 
 
