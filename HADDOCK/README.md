@@ -59,7 +59,31 @@ For more information about the scoring, please refer to the [HADDOCK Manual](htt
 
 # Download
 
-The datasets (4 of those containing each 250k models) can be downloaded from [DOI:10.5281/zenodo.3271425](https://zenodo.org/record/3271425)
+The datasets (4 of those containing each 250k models) can be downloaded from [DOI:10.5281/zenodo.3271425](https://doi.org/10.5281/zenodo.3271425)
+
+
+This script can be used for downloading with streamed unpacking:
+
+```
+for n in 01 02 03 04 ; do 
+  (curl https://zenodo.org/record/3271425/files/dataset-$n.tar.gz?download=1 | tar zxf -) & done
+```
+
+The above can be sensitive to network connectivity issues, for more reliable download try:
+
+```
+curl --retry 3 -fO https://zenodo.org/record/3271425/files/dataset-0[1-4].tar.gz?download=1
+
+md5sum -c - <<EOF
+e81b134c8ddd035985a63301e07ac7ed  dataset-01.tar.gz
+689efdee5a1374f0f1ac1ef52beffe39  dataset-02.tar.gz
+de9db417622dc43472da7ac88954d2ef  dataset-03.tar.gz
+174c60b6b28205b21256326f6b580f95  dataset-04.tar.gz
+EOF
+
+for x in dataset-*.tar.gz ; do tar zxf $x ; done
+```
+
 
 # Requirements
 
@@ -69,7 +93,7 @@ The datasets (4 of those containing each 250k models) can be downloaded from [DO
 
 # Usage
 
-Unpack the datasets and create first a file list containing all models to be analysed.
+Make sure the datasets are unpacked and create first a file list containing all models to be analysed.
 For example to analyse 250k models:
 
 ```bash 
