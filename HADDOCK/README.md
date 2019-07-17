@@ -63,7 +63,7 @@ The datasets (4 of those containing each 250k models) can be downloaded from [DO
 
 # Requirements
 
-* Python 3.x.x
+* Python 3.6.x
 * ~ 80 Gb (Compressed, 20Gb each)
 * ~ 375 Gb (Uncompressed, 93Gb each)
 
