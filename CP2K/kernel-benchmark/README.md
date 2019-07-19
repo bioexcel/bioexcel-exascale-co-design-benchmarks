@@ -17,5 +17,14 @@ As well as being motivated by performance profiling results for the whole-applic
 
 ## How to build
 
+- In the top level Makefile in this directory, specify a Fortran compiler that supports Fortran 2008 (if this is truly not available, you will have to modify a few file IO statements in src/kernel_benchmark.f90 to not make use of the 'newunit' feature). 
+
+- Modify optimisation level if desired in the top level Makefile in this directory by setting FCFLAGS
+
+- Type 'make'
+
+- The resulting executable kernel_benchmark will now appear in the current directory
+
 ## How to run
 
+The resulting executable kernel_benchmark should be run without any input parameters. It expects the data subdirectory to be located in the working directory at run time. 
