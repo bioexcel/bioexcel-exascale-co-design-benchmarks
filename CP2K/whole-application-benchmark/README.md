@@ -13,4 +13,4 @@ The whole-application benchmark described in the parent directory's README can b
 
 mpirun -n 48 cp2k.popt -in qmmm-force-opt.in > qmmm-force-opt.out
 
-The benchmark has been tested with CP2K version 6.1
+The benchmark has been tested with [CP2K version 6.1](https://github.com/cp2k/cp2k/releases/tag/v6.1.0), see details on <https://www.cp2k.org/download> and <https://www.cp2k.org/howto:compile>

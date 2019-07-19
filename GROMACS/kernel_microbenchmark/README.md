@@ -41,9 +41,10 @@ little effort by the GROMACS developers in a co-design effort.
 ## Installation
 
 The subdirectory contains a simple standalone CMake project that
-requires a standard-compliant C++14 compiler. To build and run, use
+requires a standard-compliant C++14 compiler. To build and run using
+a particular compiler, use the the equivalent of:
 
-    cmake . -DCMAKE_CXX_COMPILER=/path/to/your/cc
+    cmake . -DCMAKE_CXX_COMPILER=/usr/bin/g++
     make
     ./gromacs_kernel_microbenchmark
 

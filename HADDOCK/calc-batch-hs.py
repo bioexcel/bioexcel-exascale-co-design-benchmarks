@@ -12,7 +12,7 @@ Date: 10-July-2019
 
 def create_targetlist(path):
 	""" Get the location of all PDB decoys  """
-	target_list = glob.glob(f'{path}/*.pdb')
+	target_list = glob.glob(path + '/*.pdb')
 	return target_list
 
 
@@ -85,9 +85,11 @@ def calculate_haddock_score(pdb_file):
 def output(result_list):
 	result_list.sort(key=lambda x: x[1])
 	with open('file.list', 'w') as f:
-		for decoy_name, haddock_score in result_list:
-			f.write(f'{decoy_name} {haddock_score:.4f}\n')
-	f.close()
+		#for decoy_name, haddock_score in result_list:
+			#f.write(f'{decoy_name} {haddock_score:.4f}\n')
+		for decoy_score in result_list:
+			f.write('%s %.4f\n' % decoy_score)
+
 
 
 def main():
