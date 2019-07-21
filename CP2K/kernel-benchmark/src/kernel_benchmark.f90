@@ -5,7 +5,7 @@ PROGRAM kernel_benchmark
   USE qmmm_gpw_forces,                 ONLY: qmmm_forces_with_gaussian_LG
   
   IMPLICIT NONE
-
+  
   ! variables that will be passed to kernel
   INTEGER                                            :: pgfs_size  
   REAL(KIND=dp), DIMENSION(3)                        :: cgrid_pw_grid_dr
@@ -45,8 +45,8 @@ PROGRAM kernel_benchmark
   OPEN(newunit=myunit, file='./data/pgfs_size.dat', action='READ', status='OLD')
   READ(myunit, *) pgfs_size
   CLOSE(myunit)
-
-
+  
+  
   ! read cgrid
   OPEN(newunit=myunit, file='./data/cgrid%pw_grid%dr.dat', action='READ', status='OLD')
   READ(myunit, *) cgrid_pw_grid_dr
@@ -114,15 +114,15 @@ PROGRAM kernel_benchmark
   OPEN(newunit=myunit, file='./data/mm_particles%r.dat', status='OLD', action='READ')
   READ(myunit, *) imax
   ALLOCATE (mm_particles_r(imax,3))
-  DO i=1,SIZE(mm_particles_r)
+  DO i=1,imax
      READ(myunit, *) mm_particles_r(i,:)
   END DO
   CLOSE(myunit)
   
   ! read para_env
   OPEN(newunit=myunit, file='./data/para_env.dat', status='OLD', action='READ')
-  WRITE(myunit, *) para_env_num_pe
-  WRITE(myunit, *) para_env_mepos
+  READ(myunit, *) para_env_num_pe
+  READ(myunit, *) para_env_mepos
   CLOSE(myunit)
   
   ! read Forces
@@ -132,7 +132,7 @@ PROGRAM kernel_benchmark
   ALLOCATE (Forces(imax,jmax))
   DO j=1,jmax
      DO i=1,imax
-        READ(myunit, *) Forces
+        READ(myunit, *) Forces(i,j)
      END DO
   END DO
   CLOSE(myunit)
@@ -170,13 +170,13 @@ PROGRAM kernel_benchmark
   ! read mm_cell
   OPEN(newunit=myunit, file='./data/mm_cell.dat', status='OLD', action='READ')
   READ(myunit, *) mm_cell_id_nr
-  WRITE(myunit, *) mm_cell_ref_count
-  WRITE(myunit, *) mm_cell_symmetry_id
-  WRITE(myunit, *) mm_cell_orthorhombic
-  WRITE(myunit, *) mm_cell_deth
-  WRITE(myunit, *) mm_cell_perd
-  WRITE(myunit, *) mm_cell_hmat
-  WRITE(myunit, *) mm_cell_h_inv
+  READ(myunit, *) mm_cell_ref_count
+  READ(myunit, *) mm_cell_symmetry_id
+  READ(myunit, *) mm_cell_orthorhombic
+  READ(myunit, *) mm_cell_deth
+  READ(myunit, *) mm_cell_perd
+  READ(myunit, *) mm_cell_hmat
+  READ(myunit, *) mm_cell_h_inv
   CLOSE(myunit)
   
   CALL cell_create(mm_cell,&
@@ -214,30 +214,24 @@ PROGRAM kernel_benchmark
   READ(myunit, *) shells
   CLOSE(myunit)
       
-  
-       
-      
-      
-      
+        
   
       
-  
-      
-  ! CALL qmmm_forces_with_gaussian_LG  (pgfs_size,&
-  !       cgrid_pw_grid_dr, cgrid_pw_grid_dvol, cgrid_pw_grid_bounds, cgrid_pw_grid_bounds_local, cgrid_pw_grid_cr3d,&
-  !       num_mm_atoms,&
-  !       mm_charges,& 
-  !       mm_atom_index,&
-  !       mm_particles_r,&
-  !       para_env_num_pe, para_env_mepos,&
-  !       Forces,&
-  !       per_pot_cr3d, per_pot_npts, per_pot_dr, per_pot_mm_atom_index,&
-  !       mm_cell,&
-  !       dOmmOqm,&
-  !       iw,&
-  !       par_scheme,&
-  !       qmmm_spherical_cutoff,&
-  !       shells)
+ CALL qmmm_forces_with_gaussian_LG  (pgfs_size,&
+      cgrid_pw_grid_dr, cgrid_pw_grid_dvol, cgrid_pw_grid_bounds, cgrid_pw_grid_bounds_local, cgrid_pw_grid_cr3d,&
+      num_mm_atoms,&
+      mm_charges,& 
+      mm_atom_index,&
+      mm_particles_r,&
+      para_env_num_pe, para_env_mepos,&
+      Forces,&
+      per_pot_cr3d, per_pot_npts, per_pot_dr, per_pot_mm_atom_index,&
+      mm_cell,&
+      dOmmOqm,&
+      iw,&
+      par_scheme,&
+      qmmm_spherical_cutoff,&
+      shells)
 
 
 
