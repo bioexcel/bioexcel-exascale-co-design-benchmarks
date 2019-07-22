@@ -13,11 +13,14 @@ As well as being motivated by performance profiling results for the whole-applic
 [4] https://www.cp2k.org/performance  
 [5] https://repository.prace-ri.eu/git/UEABS/ueabs  
 [6] https://www.cp2k.org/dev:profiling
-  
+
+## Requirements
+
+The benchmark kernel is entirely self contained - the kernel code itself (qmmm_gpw_forces.f90), a  wrapper (kernel_benchmark.f90), some dependencies adapted from the CP2K codebase, and input files corresponding to the whole-application benchmark also contained in this repository are all included (more information in src/README.md and data/README.md). All that is required to build the kernel benchmark is a Fortran 2008-compatible compiler (gfortran is recommended, as it is for CP2K as a whole). If a Fortran 2008-compatible compiler is not available, you will have to modify a few file IO statements in src/kernel_benchmark.f90 to not make use of the 'newunit' feature. 
 
 ## How to build
 
-- In the Makefile in this directory, specify a Fortran compiler that supports Fortran 2008 (if this is truly not available, you will have to modify a few file IO statements in src/kernel_benchmark.f90 to not make use of the 'newunit' feature), and specify an optimisation level by setting FCFLAGS
+- In the Makefile in this directory, specify a Fortran compiler that supports Fortran 2008 (), and specify an optimisation level by setting FCFLAGS
 
 - Type 'make'
 
@@ -27,4 +30,8 @@ As well as being motivated by performance profiling results for the whole-applic
 
 ## How to run
 
-The executable kernel_benchmark should be run without any input parameters. It expects the data subdirectory to be located in the working directory where it executes. 
+The executable kernel_benchmark should be run without any input parameters. It expects the data subdirectory to be located in the working directory where it executes. The executable prints out times obtained using calls to system_clock() to time the initialisation and the time spent running the kernel. 
+
+## Checking results and expected runtime
+
+A reference output file ./data/Forces.out is provided against which any Forces.out produced by running the benchmark can be compared using the diff command. The reference output was produced by running the benchmark after compiling with gfortran version 8.2.0 with -g and default optimisation level (-O0) on a single core of a quad-core Intel i7-3820QM, for which the kernel call takes just over 3 minutes. No difference in Forces.out was encountered when running on the same platform with -O3 and -mavx flags, for which the kernel call takes around 60 seconds. 
