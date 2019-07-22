@@ -12,7 +12,8 @@ PROGRAM kernel_benchmark
   REAL(KIND=dp)                                      :: cgrid_pw_grid_dvol
   INTEGER, DIMENSION(2, 3)                           :: cgrid_pw_grid_bounds
   INTEGER, DIMENSION(2, 3)                           :: cgrid_pw_grid_bounds_local
-  REAL(KIND=dp), DIMENSION(:, :, :), POINTER         :: cgrid_pw_grid_cr3d
+  REAL(KIND=dp), DIMENSION(-20:20,-20:20,-20:20), TARGET     :: cgrid_pw_grid_cr3d
+  REAL(KIND=dp), DIMENSION(:,:,:), POINTER           :: cgrid_pw_grid_cr3d_PTR
   INTEGER                                            :: num_mm_atoms
   REAL(KIND=dp), DIMENSION(:), POINTER               :: mm_charges 
   INTEGER, DIMENSION(:), POINTER                     :: mm_atom_index
@@ -39,7 +40,11 @@ PROGRAM kernel_benchmark
   INTEGER                                            :: myunit
   INTEGER                                            :: i,j,k
   INTEGER                                            :: imax, jmax, kmax
+  INTEGER                                            :: t1, t2, t3, t4, count_rate, count_max
   
+  WRITE(*,*) "Reading input files in ./data and initialising data structures needed by kernel..."
+    
+  CALL system_clock (t1, count_rate, count_max)
   
   ! read pgfs_size
   OPEN(newunit=myunit, file='./data/pgfs_size.dat', action='READ', status='OLD')
@@ -77,20 +82,19 @@ PROGRAM kernel_benchmark
   CLOSE(myunit)
   
   OPEN(newunit=myunit, file='./data/cgrid%cr3d.dat', action='READ', status='OLD')
-  READ(myunit, *) imax
-  READ(myunit, *) jmax
-  READ(myunit, *) kmax
-  ALLOCATE (cgrid_pw_grid_cr3d(imax,jmax,kmax))
-  DO k=1,kmax
-     DO j=1,jmax
-        DO i=1,imax
+!  ALLOCATE (cgrid_pw_grid_cr3d(41,41,41))
+  DO k=-20,20
+     DO j=-20,20
+        DO i=-20,20
            READ(myunit, *) cgrid_pw_grid_cr3d (i,j,k)
         END DO
      END DO
   END DO
   CLOSE(myunit)
 
+  cgrid_pw_grid_cr3d_PTR => cgrid_pw_grid_cr3d
 
+  
   ! read num_mm_atoms
   OPEN(newunit=myunit, file='./data/num_mm_atoms.dat', action='READ', status='OLD')
   READ(myunit, *) num_mm_atoms
@@ -184,7 +188,7 @@ PROGRAM kernel_benchmark
        mm_cell_orthorhombic,&
        mm_cell_deth, mm_cell_hmat, mm_cell_h_inv, mm_cell_perd)
   
-    
+  
   ! read d0mm0qm
   OPEN(newunit=myunit, file='./data/dOmmOqm.dat', status='OLD', action='READ')
   READ(myunit, *) dOmmOqm
@@ -213,12 +217,15 @@ PROGRAM kernel_benchmark
   OPEN(newunit=myunit, file='./data/shells.dat', status='OLD', action='READ')
   READ(myunit, *) shells
   CLOSE(myunit)
-      
-        
+
+
+  CALL system_clock (t2, count_rate, count_max)
+  WRITE(*,'(A23,F6.2,A8)') "Done initialising, took", REAL(t2 - t1)/REAL(count_rate), " seconds"
+  WRITE(*, *) "Calling kernel to compute QM/MM forces..."
   
-      
+ ! call kernel      
  CALL qmmm_forces_with_gaussian_LG  (pgfs_size,&
-      cgrid_pw_grid_dr, cgrid_pw_grid_dvol, cgrid_pw_grid_bounds, cgrid_pw_grid_bounds_local, cgrid_pw_grid_cr3d,&
+      cgrid_pw_grid_dr, cgrid_pw_grid_dvol, cgrid_pw_grid_bounds, cgrid_pw_grid_bounds_local, cgrid_pw_grid_cr3d_PTR,&
       num_mm_atoms,&
       mm_charges,& 
       mm_atom_index,&
@@ -232,7 +239,23 @@ PROGRAM kernel_benchmark
       par_scheme,&
       qmmm_spherical_cutoff,&
       shells)
+ 
+ CALL system_clock (t3, count_rate, count_max)
+ WRITE(*,'(A26,F6.2,A8)') "Done running kernel, took", REAL(t3 - t2)/REAL(count_rate), " seconds"
+ WRITE(*, *) "Writing resulting forces.."
+ 
+ ! write updated forces as a check to compare to reference values
+ OPEN(newunit=myunit, file='Forces.out', status='replace', action='WRITE')
+ DO j = 1, SIZE(Forces,2)
+    DO i = 1, SIZE(Forces,1)
+       WRITE(myunit, '(I8, I8, ES14.6)') i, j, Forces(i,j)
+    END DO
+ END DO
+ CLOSE(myunit)
 
-
-
+ CALL system_clock (t4, count_rate, count_max)
+ WRITE(*,'(A25,F6.2,A8)') "Done writing forces, took", REAL(t4 - t3)/REAL(count_rate), " seconds"
+ WRITE(*,*) "Kernel benchmark completed"
+ 
+ 
 END PROGRAM
