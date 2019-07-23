@@ -52,7 +52,7 @@ RUN python3 -m venv $HOME/testing
 RUN . $HOME/testing/bin/activate && \
     pip install --no-cache-dir --upgrade pip setuptools
 
-ADD --chown=testing:testing requirements-test.txt /home/testing/gmxapi/
+ADD --chown=testing:testing requirements-*.txt /home/testing/gmxapi/
 
 RUN . $HOME/testing/bin/activate && \
     pip install --no-cache-dir -r /home/testing/gmxapi/requirements-test.txt
@@ -72,6 +72,17 @@ RUN . $HOME/testing/bin/activate && \
 ADD --chown=testing:testing src/test /home/testing/gmxapi/test
 ADD --chown=testing:testing scripts /home/testing/scripts
 ADD --chown=testing:testing test /home/testing/test
+
+ADD --chown=testing:testing sample_restraint /home/testing/sample_restraint
+
+RUN . $HOME/testing/bin/activate && \
+    . /usr/local/gromacs/bin/GMXRC && \
+    (cd $HOME/sample_restraint && \
+     mkdir build && \
+     cd build && \
+     cmake .. && \
+     make -j4 install \
+    )
 
 # TODO: this can be in the root user section above once it is stable
 COPY docker/entrypoint.sh /

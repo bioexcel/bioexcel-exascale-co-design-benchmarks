@@ -110,7 +110,7 @@ static std::string setKernelSetup(const KernelBenchOptions &options,
     return "";
 }
 
-//! Return a interaction constants struct will members used in the benchmark set appropriately
+//! Return an interaction constants struct with members used in the benchmark set appropriately
 static interaction_const_t setupInteractionConst(const KernelBenchOptions &options)
 
 {
@@ -144,6 +144,7 @@ static std::unique_ptr<nonbonded_verlet_t>
 setupNbnxmForBenchInstance(const KernelBenchOptions &options,
                            const BenchmarkSystem    &system)
 {
+    const auto         pinPolicy       = (options.useGpu ? gmx::PinningPolicy::PinnedIfSupported : gmx::PinningPolicy::CannotBePinned);
     const int          numThreads      = options.numThreads;
     // Note: the options and Nbnxm combination rule enums values should match
     const int          combinationRule = options.ljCombinationRule;
@@ -158,15 +159,15 @@ setupNbnxmForBenchInstance(const KernelBenchOptions &options,
 
     PairlistParams     pairlistParams(kernelSetup.kernelType, false, options.pairlistCutoff, false);
 
-    GridSet            gridSet(epbcXYZ, nullptr, nullptr, pairlistParams.pairlistType, false, numThreads);
+    GridSet            gridSet(epbcXYZ, nullptr, nullptr, pairlistParams.pairlistType, false, numThreads, pinPolicy);
 
     auto               pairlistSets = std::make_unique<PairlistSets>(pairlistParams, false, 0);
 
     auto               pairSearch   = std::make_unique<PairSearch>(epbcXYZ, nullptr, nullptr,
                                                                    pairlistParams.pairlistType,
-                                                                   false, numThreads);
+                                                                   false, numThreads, pinPolicy);
 
-    auto atomData     = std::make_unique<nbnxn_atomdata_t>(options.useGpu ? gmx::PinningPolicy::PinnedIfSupported : gmx::PinningPolicy::CannotBePinned);
+    auto atomData     = std::make_unique<nbnxn_atomdata_t>(pinPolicy);
 
     // Put everything together
     auto nbv = std::make_unique<nonbonded_verlet_t>(std::move(pairlistSets),
@@ -299,7 +300,7 @@ static void setupAndRunInstance(const BenchmarkSystem    &system,
         nbv->dispatchNonbondedKernel(InteractionLocality::Local,
                                      ic, forceFlags, enbvClearFYes, system.forceRec,
                                      &enerd,
-                                     &nrnb);
+                                     &nrnb, nullptr);
     }
 
     const int          numIterations = (doWarmup ? options.numWarmupIterations : options.numIterations);
@@ -312,7 +313,7 @@ static void setupAndRunInstance(const BenchmarkSystem    &system,
         nbv->dispatchNonbondedKernel(InteractionLocality::Local,
                                      ic, forceFlags, enbvClearFNo, system.forceRec,
                                      &enerd,
-                                     &nrnb);
+                                     &nrnb, nullptr);
     }
     cycles = gmx_cycles_read() - cycles;
     if (!doWarmup)

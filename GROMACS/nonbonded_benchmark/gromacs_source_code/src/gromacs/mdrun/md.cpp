@@ -167,7 +167,7 @@ void gmx::Simulator::do_md()
     gmx_bool                bDoDHDL = FALSE, bDoFEP = FALSE, bDoExpanded = FALSE;
     gmx_bool                do_ene, do_log, do_verbose;
     gmx_bool                bMasterState;
-    int                     force_flags, cglo_flags;
+    unsigned int            force_flags;
     tensor                  force_vir = {{0}}, shake_vir = {{0}}, total_vir = {{0}},
                             tmp_vir   = {{0}}, pres = {{0}};
     int                     i, m;
@@ -296,14 +296,11 @@ void gmx::Simulator::do_md()
 
     if (DOMAINDECOMP(cr))
     {
+        GMX_RELEASE_ASSERT(!c_useGpuUpdateConstrain, "Domain decomposition is not supported with GPU-based update-constraints.");
         dd_init_local_top(*top_global, &top);
 
         stateInstance = std::make_unique<t_state>();
         state         = stateInstance.get();
-        if (fr->nbv->useGpu())
-        {
-            changePinningPolicy(&state->x, gmx::PinningPolicy::PinnedIfSupported);
-        }
         dd_init_local_state(cr->dd, state_global, state);
 
         /* Distribute the charge groups over the nodes from the master node */
@@ -344,6 +341,11 @@ void gmx::Simulator::do_md()
             integrator->setPbc(&pbc);
         }
 
+    }
+
+    if (fr->nbv->useGpu())
+    {
+        changePinningPolicy(&state->x, gmx::PinningPolicy::PinnedIfSupported);
     }
 
     // NOTE: The global state is no longer used at this point.
@@ -435,7 +437,7 @@ void gmx::Simulator::do_md()
 
     if (!ir->bContinuation)
     {
-        if (state->flags & (1 << estV))
+        if (state->flags & (1u << estV))
         {
             auto v = makeArrayRef(state->v);
             /* Set the velocities of vsites, shells and frozen atoms to zero */
@@ -514,10 +516,10 @@ void gmx::Simulator::do_md()
         restore_ekinstate_from_state(cr, ekind, &state_global->ekinstate);
     }
 
-    cglo_flags = (CGLO_INITIALIZATION | CGLO_TEMPERATURE | CGLO_GSTAT
-                  | (EI_VV(ir->eI) ? CGLO_PRESSURE : 0)
-                  | (EI_VV(ir->eI) ? CGLO_CONSTRAINT : 0)
-                  | (hasReadEkinState ? CGLO_READEKIN : 0));
+    unsigned int cglo_flags = (CGLO_INITIALIZATION | CGLO_TEMPERATURE | CGLO_GSTAT
+                               | (EI_VV(ir->eI) ? CGLO_PRESSURE : 0)
+                               | (EI_VV(ir->eI) ? CGLO_CONSTRAINT : 0)
+                               | (hasReadEkinState ? CGLO_READEKIN : 0));
 
     bSumEkinhOld = FALSE;
 
@@ -531,20 +533,22 @@ void gmx::Simulator::do_md()
      */
     for (int cgloIteration = 0; cgloIteration < (bStopCM ? 2 : 1); cgloIteration++)
     {
-        int cglo_flags_iteration = cglo_flags;
+        unsigned int cglo_flags_iteration = cglo_flags;
         if (bStopCM && cgloIteration == 0)
         {
             cglo_flags_iteration |= CGLO_STOPCM;
             cglo_flags_iteration &= ~CGLO_TEMPERATURE;
         }
-        compute_globals(fplog, gstat, cr, ir, fr, ekind, state, mdatoms, nrnb, &vcm,
+        compute_globals(fplog, gstat, cr, ir, fr, ekind,
+                        state->x.rvec_array(), state->v.rvec_array(), state->box, state->lambda[efptVDW],
+                        mdatoms, nrnb, &vcm,
                         nullptr, enerd, force_vir, shake_vir, total_vir, pres, mu_tot,
                         constr, &nullSignaller, state->box,
                         &totalNumberOfBondedInteractions, &bSumEkinhOld, cglo_flags_iteration
                         | (shouldCheckNumberOfBondedInteractions ? CGLO_CHECK_NUMBER_OF_BONDED_INTERACTIONS : 0));
     }
     checkNumberOfBondedInteractions(mdlog, cr, totalNumberOfBondedInteractions,
-                                    top_global, &top, state,
+                                    top_global, &top, state->x.rvec_array(), state->box,
                                     &shouldCheckNumberOfBondedInteractions);
     if (ir->eI == eiVVAK)
     {
@@ -554,7 +558,9 @@ void gmx::Simulator::do_md()
            kinetic energy calculation.  This minimized excess variables, but
            perhaps loses some logic?*/
 
-        compute_globals(fplog, gstat, cr, ir, fr, ekind, state, mdatoms, nrnb, &vcm,
+        compute_globals(fplog, gstat, cr, ir, fr, ekind,
+                        state->x.rvec_array(), state->v.rvec_array(), state->box, state->lambda[efptVDW],
+                        mdatoms, nrnb, &vcm,
                         nullptr, enerd, force_vir, shake_vir, total_vir, pres, mu_tot,
                         constr, &nullSignaller, state->box,
                         nullptr, &bSumEkinhOld,
@@ -829,13 +835,15 @@ void gmx::Simulator::do_md()
             /* We need the kinetic energy at minus the half step for determining
              * the full step kinetic energy and possibly for T-coupling.*/
             /* This may not be quite working correctly yet . . . . */
-            compute_globals(fplog, gstat, cr, ir, fr, ekind, state, mdatoms, nrnb, &vcm,
+            compute_globals(fplog, gstat, cr, ir, fr, ekind,
+                            state->x.rvec_array(), state->v.rvec_array(), state->box, state->lambda[efptVDW],
+                            mdatoms, nrnb, &vcm,
                             wcycle, enerd, nullptr, nullptr, nullptr, nullptr, mu_tot,
                             constr, &nullSignaller, state->box,
                             &totalNumberOfBondedInteractions, &bSumEkinhOld,
                             CGLO_GSTAT | CGLO_TEMPERATURE | CGLO_CHECK_NUMBER_OF_BONDED_INTERACTIONS);
             checkNumberOfBondedInteractions(mdlog, cr, totalNumberOfBondedInteractions,
-                                            top_global, &top, state,
+                                            top_global, &top, state->x.rvec_array(), state->box,
                                             &shouldCheckNumberOfBondedInteractions);
         }
         clear_mat(force_vir);
@@ -887,7 +895,13 @@ void gmx::Simulator::do_md()
                                 enforcedRotation, step,
                                 ir, imdSession, pull_work, bNS, force_flags, &top,
                                 constr, enerd, fcd,
-                                state, f.arrayRefWithPadding(), force_vir, mdatoms,
+                                state->natoms,
+                                state->x.arrayRefWithPadding(),
+                                state->v.arrayRefWithPadding(),
+                                state->box,
+                                state->lambda,
+                                &state->hist,
+                                f.arrayRefWithPadding(), force_vir, mdatoms,
                                 nrnb, wcycle, graph,
                                 shellfc, fr, ppForceWorkload, t, mu_tot,
                                 vsite,
@@ -978,7 +992,9 @@ void gmx::Simulator::do_md()
             if (bGStat || do_per_step(step-1, nstglobalcomm))
             {
                 wallcycle_stop(wcycle, ewcUPDATE);
-                compute_globals(fplog, gstat, cr, ir, fr, ekind, state, mdatoms, nrnb, &vcm,
+                compute_globals(fplog, gstat, cr, ir, fr, ekind,
+                                state->x.rvec_array(), state->v.rvec_array(), state->box, state->lambda[efptVDW],
+                                mdatoms, nrnb, &vcm,
                                 wcycle, enerd, force_vir, shake_vir, total_vir, pres, mu_tot,
                                 constr, &nullSignaller, state->box,
                                 &totalNumberOfBondedInteractions, &bSumEkinhOld,
@@ -999,7 +1015,7 @@ void gmx::Simulator::do_md()
                    b) If we are using EkinAveEkin for the kinetic energy for the temperature control, we still feed in
                    EkinAveVel because it's needed for the pressure */
                 checkNumberOfBondedInteractions(mdlog, cr, totalNumberOfBondedInteractions,
-                                                top_global, &top, state,
+                                                top_global, &top, state->x.rvec_array(), state->box,
                                                 &shouldCheckNumberOfBondedInteractions);
                 wallcycle_start(wcycle, ewcUPDATE);
             }
@@ -1033,7 +1049,9 @@ void gmx::Simulator::do_md()
                     /* We need the kinetic energy at minus the half step for determining
                      * the full step kinetic energy and possibly for T-coupling.*/
                     /* This may not be quite working correctly yet . . . . */
-                    compute_globals(fplog, gstat, cr, ir, fr, ekind, state, mdatoms, nrnb, &vcm,
+                    compute_globals(fplog, gstat, cr, ir, fr, ekind,
+                                    state->x.rvec_array(), state->v.rvec_array(), state->box, state->lambda[efptVDW],
+                                    mdatoms, nrnb, &vcm,
                                     wcycle, enerd, nullptr, nullptr, nullptr, nullptr, mu_tot,
                                     constr, &nullSignaller, state->box,
                                     nullptr, &bSumEkinhOld,
@@ -1232,7 +1250,9 @@ void gmx::Simulator::do_md()
         {
             /* erase F_EKIN and F_TEMP here? */
             /* just compute the kinetic energy at the half step to perform a trotter step */
-            compute_globals(fplog, gstat, cr, ir, fr, ekind, state, mdatoms, nrnb, &vcm,
+            compute_globals(fplog, gstat, cr, ir, fr, ekind,
+                            state->x.rvec_array(), state->v.rvec_array(), state->box, state->lambda[efptVDW],
+                            mdatoms, nrnb, &vcm,
                             wcycle, enerd, force_vir, shake_vir, total_vir, pres, mu_tot,
                             constr, &nullSignaller, lastbox,
                             nullptr, &bSumEkinhOld,
@@ -1319,7 +1339,9 @@ void gmx::Simulator::do_md()
                 bool                doIntraSimSignal = true;
                 SimulationSignaller signaller(&signals, cr, ms, doInterSimSignal, doIntraSimSignal);
 
-                compute_globals(fplog, gstat, cr, ir, fr, ekind, state, mdatoms, nrnb, &vcm,
+                compute_globals(fplog, gstat, cr, ir, fr, ekind,
+                                state->x.rvec_array(), state->v.rvec_array(), state->box, state->lambda[efptVDW],
+                                mdatoms, nrnb, &vcm,
                                 wcycle, enerd, force_vir, shake_vir, total_vir, pres, mu_tot,
                                 constr, &signaller,
                                 lastbox,
@@ -1333,7 +1355,7 @@ void gmx::Simulator::do_md()
                                 | (shouldCheckNumberOfBondedInteractions ? CGLO_CHECK_NUMBER_OF_BONDED_INTERACTIONS : 0)
                                 );
                 checkNumberOfBondedInteractions(mdlog, cr, totalNumberOfBondedInteractions,
-                                                top_global, &top, state,
+                                                top_global, &top, state->x.rvec_array(), state->box,
                                                 &shouldCheckNumberOfBondedInteractions);
             }
         }
@@ -1503,7 +1525,7 @@ void gmx::Simulator::do_md()
         /* With all integrators, except VV, we need to retain the pressure
          * at the current step for coupling at the next step.
          */
-        if ((state->flags & (1<<estPRES_PREV)) &&
+        if ((state->flags & (1u<<estPRES_PREV)) &&
             (bGStatEveryStep ||
              (ir->nstpcouple > 0 && step % ir->nstpcouple == 0)))
         {

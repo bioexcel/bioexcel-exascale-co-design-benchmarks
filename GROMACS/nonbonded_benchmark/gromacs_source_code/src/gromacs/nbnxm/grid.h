@@ -56,6 +56,7 @@
 #include <memory>
 #include <vector>
 
+#include "gromacs/gpu_utils/hostallocator.h"
 #include "gromacs/math/vectypes.h"
 #include "gromacs/simd/simd.h"
 #include "gromacs/utility/alignedallocator.h"
@@ -74,6 +75,9 @@ class UpdateGroupsCog;
 
 namespace Nbnxm
 {
+
+struct GridSetData;
+struct GridWork;
 
 /*! \internal
  * \brief Bounding box for a nbnxm atom cluster
@@ -210,35 +214,6 @@ namespace Nbnxm
 {
 
 /*! \internal
- * \brief Helper struct to pass data that is shared over all grids
- *
- * To enable a single coordinate and force array, a single cell range
- * is needed which covers all grids. This helper struct contains
- * references to the index lists mapping both ways, as well as
- * the free-energy boolean, which is the same for all grids.
- */
-struct GridSetData
-{
-    //! The cell indices for all atoms
-    std::vector<int> &cells;
-    //! The atom indices for all atoms stored in cell order
-    std::vector<int> &atomIndices;
-    //! Tells whether we are have perturbed non-bonded interations
-    const bool        haveFep;
-};
-
-/*! \internal
- * \brief Working arrays for constructing a grid
- */
-struct GridWork
-{
-    //! Number of atoms for each grid column
-    std::vector<int> numAtomsPerColumn;
-    //! Buffer for sorting integers
-    std::vector<int> sortBuffer;
-};
-
-/*! \internal
  * \brief A pair-search grid object for one domain decomposition zone
  *
  * This is a rectangular 3D grid covering a potentially non-rectangular
@@ -300,7 +275,8 @@ class Grid
         };
 
         //! Constructs a grid given the type of pairlist
-        Grid(PairlistType pairlistType);
+        Grid(PairlistType  pairlistType,
+             const bool   &haveFep);
 
         //! Returns the geometry of the grid cells
         const Geometry &geometry() const
@@ -488,7 +464,8 @@ class Grid
                            const rvec            upperCorner,
                            real                  atomDensity,
                            real                  maxAtomGroupRadius,
-                           bool                  haveFep);
+                           bool                  haveFep,
+                           gmx::PinningPolicy    pinningPolicy);
 
         //! Sets the cell indices using indices in \p gridSetData and \p gridWork
         void setCellIndices(int                             ddZone,
@@ -520,7 +497,7 @@ class Grid
          *
          * Potentially sorts atoms and sets the interaction flags.
          */
-        void fillCell(const GridSetData              &gridSetData,
+        void fillCell(GridSetData                    *gridSetData,
                       nbnxn_atomdata_t               *nbat,
                       int                             atomStart,
                       int                             atomEnd,
@@ -529,7 +506,7 @@ class Grid
                       BoundingBox gmx_unused         *bb_work_aligned);
 
         //! Spatially sort the atoms within one grid column
-        void sortColumnsCpuGeometry(const GridSetData &gridSetData,
+        void sortColumnsCpuGeometry(GridSetData *gridSetData,
                                     int dd_zone,
                                     int atomStart, int atomEnd,
                                     const int *atinfo,
@@ -539,7 +516,7 @@ class Grid
                                     gmx::ArrayRef<int> sort_work);
 
         //! Spatially sort the atoms within one grid column
-        void sortColumnsGpuGeometry(const GridSetData &gridSetData,
+        void sortColumnsGpuGeometry(GridSetData *gridSetData,
                                     int dd_zone,
                                     int atomStart, int atomEnd,
                                     const int *atinfo,
@@ -570,11 +547,11 @@ class Grid
         /*! \brief The number of, non-filler, atoms for each grid column.
          *
          * \todo Needs a useful name. */
-        std::vector<int> cxy_na_;
+        gmx::HostVector<int>    cxy_na_;
         /*! \brief The grid-local cell index for each grid column
          *
          * \todo Needs a useful name. */
-        std::vector<int> cxy_ind_;
+        gmx::HostVector<int>    cxy_ind_;
 
         //! The number of cluster for each cell
         std::vector<int> numClusters_;
@@ -590,6 +567,9 @@ class Grid
         gmx::ArrayRef<BoundingBox>                           bbj_;
         //! 3D bounding boxes in packed xxxx format per cell
         std::vector < float, gmx::AlignedAllocator < float>> pbb_;
+
+        //! Tells whether we have perturbed interactions, authorative source is in GridSet (never modified)
+        const bool               &haveFep_;
 
         /* Bit-flag information */
         //! Flags for properties of clusters in each cell
