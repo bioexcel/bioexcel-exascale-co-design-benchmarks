@@ -1,0 +1,21 @@
+# This file was created Tue Jul 23 16:57:48 2019
+# Created by:
+#                       :-) GROMACS - gmx mdrun, 2020 (-:
+# 
+# Executable:   /home/mabraham/git/bioexcel-exascale-co-design-benchmarks/GROMACS/nonbonded_benchmark/gromacs_source_code/bin/gmx
+# Data prefix:  /home/mabraham/git/bioexcel-exascale-co-design-benchmarks/GROMACS/nonbonded_benchmark/gromacs_source_code (source tree)
+# Working dir:  /home/mabraham/git/bioexcel-exascale-co-design-benchmarks/GROMACS/nonbonded_benchmark/gromacs_regressiontests/freeenergy/coulandvdwtogether
+# Command line:
+#   gmx mdrun -nb cpu -notunepme
+# gmx mdrun is part of G R O M A C S:
+#
+# GROMACS
+#
+@    title "dH/d\xl\f{}"
+@    xaxis  label "Time (ps)"
+@    yaxis  label "dH/d\xl\f{} (kJ/mol [\xl\f{}]\S-1\N)"
+@TYPE xy
+@ subtitle "T = 0 (K) \xl\f{} = 0.5000"
+0.0000 -70.911385
+0.0200 -69.046913
+0.0400 -70.389572
