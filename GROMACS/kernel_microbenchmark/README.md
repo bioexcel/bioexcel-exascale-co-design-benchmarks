@@ -17,10 +17,12 @@ performance.
 
 The current version of this kernel computes pair interaction distances
 and looks up the pairwise N-body interaction strength from
-pre-computed tables. In future, a version that supports computing the
-interaction directly will be added, so that CPU designers can see the
-impact of design choices on more or less CPU-bound forms of the same
-workload.
+pre-computed tables. On a normal current-generation CPU, the expected
+execution time is a few microseconds.
+
+In future, a version that supports computing the interaction directly
+will be added, so that CPU designers can see the impact of design
+choices on more or less CPU-bound forms of the same workload.
 
 In future we will consider adding SIMD-accelerated and/or
 accelerator-based version of the kernel benchmark app. Although the
@@ -38,7 +40,7 @@ capabilities, it is not useful and in many cases impossible to
 pre-generate all data. The setups of interest can be generated with
 little effort by the GROMACS developers in a co-design effort.
 
-## Installation
+## Usage
 
 The subdirectory contains a simple standalone CMake project that
 requires a standard-compliant C++14 compiler. To build and run using
