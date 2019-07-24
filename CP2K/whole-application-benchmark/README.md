@@ -17,6 +17,8 @@ The benchmark can be run directly with a regular production build of CP2K as fol
 
 `mpirun -n 24 cp2k.popt -in force-opt-qmmm.in`
 
+The number of MPI ranks (24 in this example) should be adjusted to equal the number of available cores.
+
 Or, to redirect output from stdout to file for future reference:
 
 `mpirun -n 24 cp2k.popt -in force-opt-qmmm.in > force-opt-qmmm.log`
@@ -29,9 +31,6 @@ mpirun -n 24 cp2k.psmp -in force-opt-qmmm.in > force-opt-qmmm.log
 ```
 
 Note: OpenMP-threading was not found to yield any performance advantage for this benchmark over running the pure MPI executable (`cp2k.popt`).
-
-The number of MPI ranks (24 in the above example) should be adjusted to be equal to the number of available cores.
-
 
 ## Expected runtimes and reference outputs
 
