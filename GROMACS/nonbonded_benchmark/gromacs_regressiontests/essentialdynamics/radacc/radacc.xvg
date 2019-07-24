@@ -1,0 +1,58 @@
+# This file was created Tue Jul 23 16:58:44 2019
+# Created by:
+#                       :-) GROMACS - gmx mdrun, 2020 (-:
+# 
+# Executable:   /home/mabraham/git/bioexcel-exascale-co-design-benchmarks/GROMACS/nonbonded_benchmark/gromacs_source_code/bin/gmx
+# Data prefix:  /home/mabraham/git/bioexcel-exascale-co-design-benchmarks/GROMACS/nonbonded_benchmark/gromacs_source_code (source tree)
+# Working dir:  /home/mabraham/git/bioexcel-exascale-co-design-benchmarks/GROMACS/nonbonded_benchmark/gromacs_regressiontests/essentialdynamics/radacc
+# Command line:
+#   gmx mdrun -ei sam.edi -eo radacc.xvg
+# gmx mdrun is part of G R O M A C S:
+#
+# GROMACS
+#
+@    title "Essential dynamics / flooding output"
+@    xaxis  label "Time (ps)"
+@    yaxis  label "RMSDs (nm), projections on EVs (nm), ..."
+@TYPE xy
+# Output will be written every 3 steps
+#
+# Summary of applied con/restraints for the ED group  
+# Atoms in average structure: 4
+#    monitor  : 0 vecs
+#    LINFIX   : 0 vecs
+#    LINACC   : 0 vecs
+#    RADFIX   : 0 vecs
+#    RADACC   : 2 vecs
+#    RADCON   : 0 vecs
+#    FLOODING : 0 vecs  
+@ view 0.15, 0.15, 0.75, 0.85
+@ legend on
+@ legend box on
+@ legend loctype view
+@ legend 0.78, 0.8
+@ legend length 2
+@ s0 legend "  RMSD to ref (nm)"
+@ s1 legend "  EV1prjRADACC (nm)"
+@ s2 legend "  EV2prjRADACC (nm)"
+@ s3 legend "  RADACC radius (nm)"
+#
+# Legend for 0 columns of flooding plus 4 columns of essential dynamics data:
+#       time      RMSD to ref     EV1prjRADACC     EV2prjRADACC    RADACC radius
+    0.000000         0.000379     -1.29541e-02      1.75563e-02         0.000566
+    0.003000         0.001357     -1.27707e-02      1.61792e-02         0.001955
+    0.006000         0.001913     -1.27143e-02      1.57553e-02         0.002383
+    0.009000         0.002334     -1.27162e-02      1.57551e-02         0.002383
+    0.012000         0.002975     -1.27215e-02      1.57544e-02         0.002383
+    0.015000         0.003816     -1.27288e-02      1.57534e-02         0.002383
+    0.018000         0.004739     -1.27368e-02      1.57524e-02         0.002383
+    0.021000         0.005614     -1.27397e-02      1.57123e-02         0.002423
+    0.024000         0.006358     -1.27062e-02      1.54004e-02         0.002736
+    0.027000         0.006901     -1.26167e-02      1.46725e-02         0.003469
+    0.030000         0.007235     -1.24846e-02      1.36325e-02         0.004518
+    0.033000         0.007390     -1.23421e-02      1.25244e-02         0.005635
+    0.036000         0.007341     -1.22528e-02      1.18327e-02         0.006332
+    0.039000         0.007069     -1.22430e-02      1.17518e-02         0.006414
+    0.042000         0.006740     -1.22428e-02      1.17518e-02         0.006414
+    0.045000         0.006387     -1.22427e-02      1.17518e-02         0.006414
+    0.048000         0.006047     -1.22429e-02      1.17518e-02         0.006414

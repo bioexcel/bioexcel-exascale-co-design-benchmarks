@@ -1,0 +1,34 @@
+# This file was created Tue Jul 23 16:58:16 2019
+# Created by:
+#                       :-) GROMACS - gmx mdrun, 2020 (-:
+# 
+# Executable:   /home/mabraham/git/bioexcel-exascale-co-design-benchmarks/GROMACS/nonbonded_benchmark/gromacs_source_code/bin/gmx
+# Data prefix:  /home/mabraham/git/bioexcel-exascale-co-design-benchmarks/GROMACS/nonbonded_benchmark/gromacs_source_code (source tree)
+# Working dir:  /home/mabraham/git/bioexcel-exascale-co-design-benchmarks/GROMACS/nonbonded_benchmark/gromacs_regressiontests/freeenergy/simtemp
+# Command line:
+#   gmx mdrun -nb cpu -notunepme
+# gmx mdrun is part of G R O M A C S:
+#
+# GROMACS
+#
+@    title "dH/d\xl\f{} and \xD\f{}H"
+@    xaxis  label "Time (ps)"
+@    yaxis  label "dH/d\xl\f{} and \xD\f{}H (kJ/mol [\xl\f{}]\S-1\N)"
+@TYPE xy
+@ subtitle "\xl\f{} state 1:  = "
+@ view 0.15, 0.15, 0.75, 0.85
+@ legend on
+@ legend box on
+@ legend loctype view
+@ legend 0.78, 0.8
+@ legend length 2
+@ s0 legend "Thermodynamic state"
+@ s1 legend "Total Energy (kJ/mol)"
+@ s2 legend "\xD\f{}H \xl\f{} to T = 300 (K)"
+@ s3 legend "\xD\f{}H \xl\f{} to T = 311.787 (K)"
+@ s4 legend "\xD\f{}H \xl\f{} to T = 324.037 (K)"
+@ s5 legend "\xD\f{}H \xl\f{} to T = 336.768 (K)"
+@ s6 legend "\xD\f{}H \xl\f{} to T = 350 (K)"
+0.0000    1 -29093.371 -255.84598 0.0000000 265.89781 542.24318 829.44593
+0.0200    0 -29372.902 0.0000000 261.88058 534.05087 816.91451 1110.8918
+0.0400    0 -29376.586 0.0000000 257.37482 524.86230 802.85915 1091.7785

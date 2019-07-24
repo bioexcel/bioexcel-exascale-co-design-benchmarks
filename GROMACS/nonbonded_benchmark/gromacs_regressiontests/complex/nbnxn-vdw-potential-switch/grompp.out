@@ -1,0 +1,12 @@
+turning all bonds into constraints...
+turning all bonds into constraints...
+Analysing residue names:
+There are:   400      Water residues
+There are:   200      Other residues
+Analysing residues not classified as Protein/DNA/RNA/Water and splitting into groups...
+Determining Verlet buffer for a tolerance of 0.005 kJ/mol/ps at 298 K
+Calculated rlist for 1x1 atom pair-list as 0.905 nm, buffer size 0.005 nm
+Set rlist, assuming 4x4 atom pair-list, to 0.900 nm, buffer size 0.000 nm
+Note that mdrun will redetermine rlist based on the actual pair-list setup
+Using a fourier grid of 56x28x28, spacing 0.108 0.108 0.108
+This run will generate roughly 0 Mb of data
