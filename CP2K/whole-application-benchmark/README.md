@@ -21,7 +21,17 @@ Or, to redirect output from stdout to file for future reference:
 
 `mpirun -n 24 cp2k.popt -in force-opt-qmmm.in > force-opt-qmmm.log`
 
+Alternatively, if using the hybrid MPI+OpenMP-threaded version of CP2K (`cp2k.psmp` executable), then equivalently to the above do:
+
+```
+export OMP_NUM_THREADS=1
+mpirun -n 24 cp2k.psmp -in force-opt-qmmm.in > force-opt-qmmm.log
+```
+
+Note: OpenMP-threading was not found to yield any performance advantage for this benchmark over running the pure MPI executable (`cp2k.popt`).
+
 The number of MPI ranks (24 in the above example) should be adjusted to be equal to the number of available cores.
+
 
 ## Expected runtimes and reference outputs
 
@@ -36,5 +46,5 @@ Running on 24 cores on a CRAY XC30 compute node (two 12-core Intel E5-2697v2@2.7
 | 2     | 1392        | 1.3	    |
 | 1     | 2657        | 0.6	    |
 
-Running the hybrid MPI+OpenMP-threaded version of CP2K (cp2k.psmp executable) was not found to yield any performance advantage for this benchmark over running pure MPI. Reference output log files are included in the `outputs` directory. 
+Reference output log files are included in the `outputs` directory. 
 
