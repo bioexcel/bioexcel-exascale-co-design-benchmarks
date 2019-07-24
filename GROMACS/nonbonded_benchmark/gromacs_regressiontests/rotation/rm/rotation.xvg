@@ -1,0 +1,70 @@
+# This file was created Tue Jul 23 16:58:39 2019
+# Created by:
+#                       :-) GROMACS - gmx mdrun, 2020 (-:
+# 
+# Executable:   /home/mabraham/git/bioexcel-exascale-co-design-benchmarks/GROMACS/nonbonded_benchmark/gromacs_source_code/bin/gmx
+# Data prefix:  /home/mabraham/git/bioexcel-exascale-co-design-benchmarks/GROMACS/nonbonded_benchmark/gromacs_source_code (source tree)
+# Working dir:  /home/mabraham/git/bioexcel-exascale-co-design-benchmarks/GROMACS/nonbonded_benchmark/gromacs_regressiontests/rotation/rm
+# Command line:
+#   gmx mdrun -nb cpu -notunepme
+# gmx mdrun is part of G R O M A C S:
+#
+# GROMACS
+#
+@    title "Rotation angles and energy"
+@    xaxis  label "Time (ps)"
+@    yaxis  label "angles (degrees) and energies (kJ/mol)"
+@TYPE xy
+# Output of enforced rotation data is written in intervals of 1 time step.
+#
+# The scalar tau is the torque (kJ/mol) in the direction of the rotation vector v.
+# To obtain the vectorial torque, multiply tau with the group's rot-vec.
+# For flexible groups, tau(t,n) from all slabs n have been summed in a single value tau(t) here.
+# The torques tau(t,n) are found in the rottorque.log (-rt) output file
+#
+# ROTATION GROUP 0, potential type 'rm':
+# rot-massw0          yes
+# rot-vec0             2.67261e-01  5.34522e-01  8.01784e-01
+# rot-rate0            2.50000e+03 degrees/ps
+# rot-k0               1.00000e+03 kJ/(mol*nm^2)
+# rot-pivot0           4.00000e+00  5.00000e+00  4.00000e+00  nm
+#
+@ view 0.15, 0.15, 0.75, 0.85
+@ legend on
+@ legend box on
+@ legend loctype view
+@ legend 0.78, 0.8
+@ legend length 2
+@ s0 legend "theta_ref0 (degrees)"
+@ s1 legend "theta_av0 (degrees)"
+@ s2 legend "tau0 (kJ/mol)"
+@ s3 legend "energy0 (kJ/mol)"
+#
+# Legend for the following data columns:
+#       time  theta_ref0   theta_av0        tau0     energy0
+   2.000e-03      5.0000     -8.5796  -1.595e+03   5.160e+02
+   4.000e-03     10.0000    -13.5748   1.686e+01   4.455e+02
+   6.000e-03     15.0000    -18.5633   1.628e+03   5.152e+02
+   8.000e-03     20.0000    -23.5375   3.189e+03   7.222e+02
+   1.000e-02     25.0000    -28.4934   4.650e+03   1.059e+03
+   1.200e-02     30.0000    -33.4273   5.965e+03   1.514e+03
+   1.400e-02     35.0000    -38.3364   7.095e+03   2.070e+03
+   1.600e-02     40.0000    -43.2183   8.006e+03   2.708e+03
+   1.800e-02     45.0000    -48.0717   8.674e+03   3.405e+03
+   2.000e-02     50.0000    -52.8958   9.081e+03   4.137e+03
+   2.200e-02     55.0000    -57.6905   9.220e+03   4.878e+03
+   2.400e-02     60.0000    -62.4564   9.094e+03   5.602e+03
+   2.600e-02     65.0000    -67.1946   8.713e+03   6.286e+03
+   2.800e-02     70.0000    -34.2780   8.098e+03   6.906e+03
+   3.000e-02     75.0000    -39.0010   7.274e+03   7.443e+03
+   3.200e-02     80.0000    -43.6641   6.276e+03   7.880e+03
+   3.400e-02     85.0000    -48.2686   5.141e+03   8.203e+03
+   3.600e-02     90.0000    -52.8169   3.912e+03   8.406e+03
+   3.800e-02     95.0000    -57.3125   2.632e+03   8.482e+03
+   4.000e-02    100.0000    -61.7598   1.342e+03   8.433e+03
+   4.200e-02    105.0000    -66.1640   8.537e+01   8.263e+03
+   4.400e-02    110.0000    -70.5309  -1.101e+03   7.980e+03
+   4.600e-02    115.0000    -74.8666  -2.183e+03   7.596e+03
+   4.800e-02    120.0000    -79.1773  -3.133e+03   7.125e+03
+   5.000e-02    125.0000    -83.4695  -3.929e+03   6.583e+03
+   5.200e-02    130.0000    -87.7494  -4.557e+03   5.990e+03

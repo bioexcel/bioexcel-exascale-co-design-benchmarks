@@ -1,6 +1,6 @@
 .\" Man page generated from reStructuredText.
 .
-.TH "GMX-NONBONDED_BENCH" "1" "Jul 10, 2019" "2020-dev" "GROMACS"
+.TH "GMX-NONBONDED_BENCH" "1" "Jul 23, 2019" "2020-dev" "GROMACS"
 .SH NAME
 gmx-nonbonded_bench \- Benchmarking tool for the non-bonded pair kernels
 .
@@ -71,13 +71,13 @@ results in more data reuse and makes the kernel less sensitive to cache
 misses.
 .sp
 OpenMP parallelization is used to utilize multiple hardware threads
-within a compute node. In this benchmarks there is no interaction
+within a compute node. In these benchmarks there is no interaction
 between threads, apart from starting and closing a single OpenMP
-parallel region per iteration. Additionally thread interact
-through sharing and evicting data from shared cashes.
+parallel region per iteration. Additionally, threads interact
+through sharing and evicting data from shared caches.
 The number of threads to use is set with the \fB\-nt\fP option.
 Thread affinity is important, especially with SMT and shared
-cashes. Affinities can be set through the OpenMP library using
+caches. Affinities can be set through the OpenMP library using
 the GOMP_CPU_AFFINITY environment variable.
 .sp
 The benchmark tool times one or more kernels by running them
@@ -85,10 +85,10 @@ repeatedly for a number of iterations set by the \fB\-iter\fP
 option. An initial kernel call is done to avoid additional initial
 cache misses. Times are recording in cycles read from efficient,
 high accuracy counters in the CPU. Note that these often do not
-correspond to actual clock cycles. For each kernel the total
-number of cycles is reported, the cycles per iteration, as well
-as the total and useful number of pair interactions per cycle.
-Because a cluster pair list is ued instead atom pair list,
+correspond to actual clock cycles. For each kernel, the tool
+reports the total number of cycles, cycles per iteration,
+and (total and useful) pair interactions per cycle.
+Because a cluster pair list is used instead of an atom pair list,
 interactions are also computed for some atom pairs that are beyond
 the cut\-off distance. These pairs are not useful (except for
 additional buffering, but that is not of interest here),
@@ -108,11 +108,12 @@ both ends of this regime.
 The \fB\-simd\fP and \fB\-table\fP options select different
 implementations to compute the same physics. The choice of these
 options should ideally be optimized for the target hardware.
-Up till now, we only found tabulated Ewald correction to be useful
+Historically, we only found tabulated Ewald correction to be useful
 on 2\-wide SIMD or 4\-wide SIMD without FMA support. As all modern
 architectures are wider and support FMA, we do not use tables by
-default. The only exception are kernels without SIMD, which only
-support tables.Options \fB\-coulomb\fP, \fB\-combrule\fP and \fB\-halflj\fP
+default. The only exceptions are kernels without SIMD, which only
+support tables.
+Options \fB\-coulomb\fP, \fB\-combrule\fP and \fB\-halflj\fP
 depend on the force field and composition of the simulated system.
 The optimization of computing Lennard\-Jones interactions for only
 half of the atoms in a cluster is useful for water, which does not

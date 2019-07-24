@@ -1,0 +1,46 @@
+# This file was created Tue Jul 23 16:57:51 2019
+# Created by:
+#                       :-) GROMACS - gmx mdrun, 2020 (-:
+# 
+# Executable:   /home/mabraham/git/bioexcel-exascale-co-design-benchmarks/GROMACS/nonbonded_benchmark/gromacs_source_code/bin/gmx
+# Data prefix:  /home/mabraham/git/bioexcel-exascale-co-design-benchmarks/GROMACS/nonbonded_benchmark/gromacs_source_code (source tree)
+# Working dir:  /home/mabraham/git/bioexcel-exascale-co-design-benchmarks/GROMACS/nonbonded_benchmark/gromacs_regressiontests/freeenergy/expanded
+# Command line:
+#   gmx mdrun -notunepme
+# gmx mdrun is part of G R O M A C S:
+#
+# GROMACS
+#
+@    title "dH/d\xl\f{} and \xD\f{}H"
+@    xaxis  label "Time (ps)"
+@    yaxis  label "dH/d\xl\f{} and \xD\f{}H (kJ/mol [\xl\f{}]\S-1\N)"
+@TYPE xy
+@ subtitle "T = 300 (K) "
+@ view 0.15, 0.15, 0.75, 0.85
+@ legend on
+@ legend box on
+@ legend loctype view
+@ legend 0.78, 0.8
+@ legend length 2
+@ s0 legend "Thermodynamic state"
+@ s1 legend "dH/d\xl\f{} coul-lambda = 0.0000"
+@ s2 legend "dH/d\xl\f{} vdw-lambda = 0.0000"
+@ s3 legend "\xD\f{}H \xl\f{} to (0.0000, 0.0000)"
+@ s4 legend "\xD\f{}H \xl\f{} to (0.2500, 0.0000)"
+@ s5 legend "\xD\f{}H \xl\f{} to (0.5000, 0.0000)"
+@ s6 legend "\xD\f{}H \xl\f{} to (0.7500, 0.0000)"
+@ s7 legend "\xD\f{}H \xl\f{} to (1.0000, 0.0000)"
+@ s8 legend "\xD\f{}H \xl\f{} to (1.0000, 0.2000)"
+@ s9 legend "\xD\f{}H \xl\f{} to (1.0000, 0.4000)"
+@ s10 legend "\xD\f{}H \xl\f{} to (1.0000, 0.6000)"
+@ s11 legend "\xD\f{}H \xl\f{} to (1.0000, 0.7000)"
+@ s12 legend "\xD\f{}H \xl\f{} to (1.0000, 0.8000)"
+@ s13 legend "\xD\f{}H \xl\f{} to (1.0000, 0.9000)"
+@ s14 legend "\xD\f{}H \xl\f{} to (1.0000, 1.0000)"
+0.0000    0 79.844299 -169.76385 0.0000000 19.961151 39.922192 59.883266 79.844351 65.105791 69.410626 80.923970 88.018222 95.639926 103.62254 111.84874
+0.0200    0 76.098061 -128.83813 1.5258789e-05 19.024734 38.049232 57.073851 76.098459 66.082361 72.067324 84.279113 91.552746 99.287765 107.33764 115.59850
+0.0400    0 79.183243 -128.66884 1.5258789e-05 19.795879 39.591774 59.387653 79.183540 69.369512 75.598626 87.953232 95.258872 103.00383 111.04520 119.28252
+0.0600    0 77.915833 -110.10123 0.0000000 19.478729 38.957851 58.436771 77.915686 70.850657 78.377189 91.303326 98.750692 106.57891 114.66243 122.91287
+0.0800    0 74.527954 -96.137909 -1.5258789e-05 18.631935 37.264030 55.896057 74.528080 69.082800 77.183680 90.343850 97.848461 105.71020 113.81046 122.06559
+0.1000    1 59.226562 -86.522011 -14.806446 0.0000000 14.806820 29.613428 44.420046 40.719636 49.885146 63.625163 71.308524 79.299705 87.492711 95.813149
+0.1200    0 64.087212 -92.900078 0.0000000 16.021713 32.043575 48.065357 64.087139 59.438272 68.165273 81.699987 89.322888 97.269696 105.42929 113.72388

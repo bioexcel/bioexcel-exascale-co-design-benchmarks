@@ -34,8 +34,11 @@
 
 """gmxapi Python package for GROMACS."""
 
-__all__ = ['commandline_operation', 'logger', 'operation']
+__all__ = ['commandline_operation', 'exceptions', 'logger', 'operation']
 
+import os
+
+from gmxapi import exceptions
 from gmxapi import operation
 from gmxapi._logging import logger
 from gmxapi.commandline import commandline_operation

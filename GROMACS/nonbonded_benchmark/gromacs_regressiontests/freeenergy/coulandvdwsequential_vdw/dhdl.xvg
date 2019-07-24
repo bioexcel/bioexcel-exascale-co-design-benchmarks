@@ -1,0 +1,32 @@
+# This file was created Tue Jul 23 16:57:44 2019
+# Created by:
+#                       :-) GROMACS - gmx mdrun, 2020 (-:
+# 
+# Executable:   /home/mabraham/git/bioexcel-exascale-co-design-benchmarks/GROMACS/nonbonded_benchmark/gromacs_source_code/bin/gmx
+# Data prefix:  /home/mabraham/git/bioexcel-exascale-co-design-benchmarks/GROMACS/nonbonded_benchmark/gromacs_source_code (source tree)
+# Working dir:  /home/mabraham/git/bioexcel-exascale-co-design-benchmarks/GROMACS/nonbonded_benchmark/gromacs_regressiontests/freeenergy/coulandvdwsequential_vdw
+# Command line:
+#   gmx mdrun -nb cpu -notunepme
+# gmx mdrun is part of G R O M A C S:
+#
+# GROMACS
+#
+@    title "dH/d\xl\f{} and \xD\f{}H"
+@    xaxis  label "Time (ps)"
+@    yaxis  label "dH/d\xl\f{} and \xD\f{}H (kJ/mol [\xl\f{}]\S-1\N)"
+@TYPE xy
+@ subtitle "T = 298 (K) \xl\f{} state 3: (coul-lambda, vdw-lambda) = (0.0000, 0.6000)"
+@ view 0.15, 0.15, 0.75, 0.85
+@ legend on
+@ legend box on
+@ legend loctype view
+@ legend 0.78, 0.8
+@ legend length 2
+@ s0 legend "dH/d\xl\f{} coul-lambda = 0.0000"
+@ s1 legend "dH/d\xl\f{} vdw-lambda = 0.6000"
+@ s2 legend "\xD\f{}H \xl\f{} to (0.0000, 0.4000)"
+@ s3 legend "\xD\f{}H \xl\f{} to (0.0000, 0.6000)"
+@ s4 legend "\xD\f{}H \xl\f{} to (0.0000, 0.8000)"
+0.0000 -38.508976 -33.733849 7.2819793 0.0000000 -5.9471145
+0.0200 -16.781071 -31.384851 6.9591586 0.0000000 -5.1941238
+0.0400 -19.983597 -29.095858 6.6416728 0.0000000 -4.4750553

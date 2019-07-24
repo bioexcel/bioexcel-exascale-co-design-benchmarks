@@ -1,0 +1,63 @@
+                       :-) GROMACS - gmx mdrun, 2020 (-:
+
+                            GROMACS is written by:
+     Emile Apol      Rossen Apostolov      Paul Bauer     Herman J.C. Berendsen
+    Par Bjelkmar      Christian Blau   Viacheslav Bolnykh     Kevin Boyd    
+ Aldert van Buuren   Rudi van Drunen     Anton Feenstra       Alan Gray     
+  Gerrit Groenhof     Anca Hamuraru    Vincent Hindriksen  M. Eric Irrgang  
+  Aleksei Iupinov   Christoph Junghans     Joe Jordan     Dimitrios Karkoulis
+    Peter Kasson        Jiri Kraus      Carsten Kutzner      Per Larsson    
+  Justin A. Lemkul    Viveca Lindahl    Magnus Lundborg     Erik Marklund   
+    Pascal Merz     Pieter Meulenhoff    Teemu Murtola       Szilard Pall   
+    Sander Pronk      Roland Schulz      Michael Shirts    Alexey Shvetsov  
+   Alfons Sijbers     Peter Tieleman      Jon Vincent      Teemu Virolainen 
+ Christian Wennberg    Maarten Wolf   
+                           and the project leaders:
+        Mark Abraham, Berk Hess, Erik Lindahl, and David van der Spoel
+
+Copyright (c) 1991-2000, University of Groningen, The Netherlands.
+Copyright (c) 2001-2018, The GROMACS development team at
+Uppsala University, Stockholm University and
+the Royal Institute of Technology, Sweden.
+check out http://www.gromacs.org for more information.
+
+GROMACS is free software; you can redistribute it and/or modify it
+under the terms of the GNU Lesser General Public License
+as published by the Free Software Foundation; either version 2.1
+of the License, or (at your option) any later version.
+
+GROMACS:      gmx mdrun, version 2020
+Executable:   /home/mabraham/git/bioexcel-exascale-co-design-benchmarks/GROMACS/nonbonded_benchmark/gromacs_source_code/bin/gmx
+Data prefix:  /home/mabraham/git/bioexcel-exascale-co-design-benchmarks/GROMACS/nonbonded_benchmark/gromacs_source_code (source tree)
+Working dir:  /home/mabraham/git/bioexcel-exascale-co-design-benchmarks/GROMACS/nonbonded_benchmark/gromacs_regressiontests/essentialdynamics/flooding1
+Command line:
+  gmx mdrun -ei sam.edi -eo flooding1.xvg
+
+Reading file topol.tpr, VERSION 2020 (single precision)
+Changing nstlist from 25 to 40, rlist from 1.051 to 1.097
+
+Using 1 MPI thread
+Using 4 OpenMP threads 
+
+ED: Initializing essential dynamics constraints.
+ED: Reading edi file sam.edi
+ED: Found 1 ED group.
+ED: Flooding 2 eigenvectors.
+ED: Initial RMSD from reference after fit = 0.254147 nm
+ED: Setting center of flooding potential (0 = average structure)
+ED: A (possibly changing) ref. projection will define the flooding potential center.
+starting mdrun 'GUANYLIN (A-FORM) (ENDOGENOUS LIGAND TO THE HEAT STABLE in water'
+0 steps,      0.0 ps.
+
+NOTE: 18 % of the run time was spent in pair search,
+      you might want to increase nstlist (this has no effect on accuracy)
+
+               Core t (s)   Wall t (s)        (%)
+       Time:        0.612        0.153      398.7
+                 (ns/day)    (hour/ns)
+Performance:        1.126       21.319
+
+Thanx for Using GROMACS - Have a Nice Day
+
+ED: EV 1 flooding potential center:  5.0000e-01 (adding  0.0000e+00/timestep)
+ED: EV 2 flooding potential center: -1.0000e-01 (adding  0.0000e+00/timestep)

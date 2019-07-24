@@ -1,0 +1,62 @@
+                       :-) GROMACS - gmx mdrun, 2020 (-:
+
+                            GROMACS is written by:
+     Emile Apol      Rossen Apostolov      Paul Bauer     Herman J.C. Berendsen
+    Par Bjelkmar      Christian Blau   Viacheslav Bolnykh     Kevin Boyd    
+ Aldert van Buuren   Rudi van Drunen     Anton Feenstra       Alan Gray     
+  Gerrit Groenhof     Anca Hamuraru    Vincent Hindriksen  M. Eric Irrgang  
+  Aleksei Iupinov   Christoph Junghans     Joe Jordan     Dimitrios Karkoulis
+    Peter Kasson        Jiri Kraus      Carsten Kutzner      Per Larsson    
+  Justin A. Lemkul    Viveca Lindahl    Magnus Lundborg     Erik Marklund   
+    Pascal Merz     Pieter Meulenhoff    Teemu Murtola       Szilard Pall   
+    Sander Pronk      Roland Schulz      Michael Shirts    Alexey Shvetsov  
+   Alfons Sijbers     Peter Tieleman      Jon Vincent      Teemu Virolainen 
+ Christian Wennberg    Maarten Wolf   
+                           and the project leaders:
+        Mark Abraham, Berk Hess, Erik Lindahl, and David van der Spoel
+
+Copyright (c) 1991-2000, University of Groningen, The Netherlands.
+Copyright (c) 2001-2018, The GROMACS development team at
+Uppsala University, Stockholm University and
+the Royal Institute of Technology, Sweden.
+check out http://www.gromacs.org for more information.
+
+GROMACS is free software; you can redistribute it and/or modify it
+under the terms of the GNU Lesser General Public License
+as published by the Free Software Foundation; either version 2.1
+of the License, or (at your option) any later version.
+
+GROMACS:      gmx mdrun, version 2020
+Executable:   /home/mabraham/git/bioexcel-exascale-co-design-benchmarks/GROMACS/nonbonded_benchmark/gromacs_source_code/bin/gmx
+Data prefix:  /home/mabraham/git/bioexcel-exascale-co-design-benchmarks/GROMACS/nonbonded_benchmark/gromacs_source_code (source tree)
+Working dir:  /home/mabraham/git/bioexcel-exascale-co-design-benchmarks/GROMACS/nonbonded_benchmark/gromacs_regressiontests/complex/swap_x
+Command line:
+  gmx mdrun -notunepme
+
+Reading file topol.tpr, VERSION 2020 (single precision)
+Changing nstlist from 10 to 40, rlist from 1.011 to 1.115
+
+Using 1 MPI thread
+Using 4 OpenMP threads 
+
+SWAP: Determining initial numbers of ions per compartment.
+SWAP: Setting pointers for checkpoint writing
+SWAP: Channel 0 flux history for ion type NA+ (charge 1): 0 molecules
+SWAP: Channel 1 flux history for ion type NA+ (charge 1): 0 molecules
+SWAP: Channel 0 flux history for ion type CL- (charge -1): 0 molecules
+SWAP: Channel 1 flux history for ion type CL- (charge -1): 0 molecules
+starting mdrun 'Channel_coco in octane membrane'
+2 steps,      0.0 ps.
+
+Writing final coordinates.
+
+NOTE: 15 % of the run time was spent in pair search,
+      you might want to increase nstlist (this has no effect on accuracy)
+
+               Core t (s)   Wall t (s)        (%)
+       Time:        4.817        1.205      399.7
+                 (ns/day)    (hour/ns)
+Performance:        0.860       27.897
+
+Thanx for Using GROMACS - Have a Nice Day
+

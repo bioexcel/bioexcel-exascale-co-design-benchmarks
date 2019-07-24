@@ -1,0 +1,88 @@
+                       :-) GROMACS - gmx grompp, 2020 (-:
+
+                            GROMACS is written by:
+     Emile Apol      Rossen Apostolov      Paul Bauer     Herman J.C. Berendsen
+    Par Bjelkmar      Christian Blau   Viacheslav Bolnykh     Kevin Boyd    
+ Aldert van Buuren   Rudi van Drunen     Anton Feenstra       Alan Gray     
+  Gerrit Groenhof     Anca Hamuraru    Vincent Hindriksen  M. Eric Irrgang  
+  Aleksei Iupinov   Christoph Junghans     Joe Jordan     Dimitrios Karkoulis
+    Peter Kasson        Jiri Kraus      Carsten Kutzner      Per Larsson    
+  Justin A. Lemkul    Viveca Lindahl    Magnus Lundborg     Erik Marklund   
+    Pascal Merz     Pieter Meulenhoff    Teemu Murtola       Szilard Pall   
+    Sander Pronk      Roland Schulz      Michael Shirts    Alexey Shvetsov  
+   Alfons Sijbers     Peter Tieleman      Jon Vincent      Teemu Virolainen 
+ Christian Wennberg    Maarten Wolf   
+                           and the project leaders:
+        Mark Abraham, Berk Hess, Erik Lindahl, and David van der Spoel
+
+Copyright (c) 1991-2000, University of Groningen, The Netherlands.
+Copyright (c) 2001-2018, The GROMACS development team at
+Uppsala University, Stockholm University and
+the Royal Institute of Technology, Sweden.
+check out http://www.gromacs.org for more information.
+
+GROMACS is free software; you can redistribute it and/or modify it
+under the terms of the GNU Lesser General Public License
+as published by the Free Software Foundation; either version 2.1
+of the License, or (at your option) any later version.
+
+GROMACS:      gmx grompp, version 2020
+Executable:   /home/mabraham/git/bioexcel-exascale-co-design-benchmarks/GROMACS/nonbonded_benchmark/gromacs_source_code/bin/gmx
+Data prefix:  /home/mabraham/git/bioexcel-exascale-co-design-benchmarks/GROMACS/nonbonded_benchmark/gromacs_source_code (source tree)
+Working dir:  /home/mabraham/git/bioexcel-exascale-co-design-benchmarks/GROMACS/nonbonded_benchmark/gromacs_regressiontests/rotation/flex2
+Command line:
+  gmx grompp -f ./grompp.mdp -c ./conf -r ./conf -p ./topol -maxwarn 10
+
+Ignoring obsolete mdp entry 'optimize_fft'
+Ignoring obsolete mdp entry 'rlistlong'
+Ignoring obsolete mdp entry 'nstcalclr'
+Ignoring obsolete mdp entry 'gb_algorithm'
+Ignoring obsolete mdp entry 'nstgbradii'
+Ignoring obsolete mdp entry 'rgbradii'
+Ignoring obsolete mdp entry 'gb_epsilon_solvent'
+Ignoring obsolete mdp entry 'gb_saltconc'
+Ignoring obsolete mdp entry 'gb_obc_alpha'
+Ignoring obsolete mdp entry 'gb_obc_beta'
+Ignoring obsolete mdp entry 'gb_obc_gamma'
+Ignoring obsolete mdp entry 'gb_dielectric_offset'
+Ignoring obsolete mdp entry 'sa_algorithm'
+Ignoring obsolete mdp entry 'sa_surface_tension'
+Replacing old mdp entry 'verlet-buffer-drift' by 'verlet-buffer-tolerance'
+Replacing old mdp entry 'nstxtcout' by 'nstxout-compressed'
+Replacing old mdp entry 'xtc-precision' by 'compressed-x-precision'
+Enforced rotation: Group 0 (flex2) normalized rot. vector: 0.267261 0.534522 0.801784
+
+NOTE 1 [file ./grompp.mdp]:
+  With Verlet lists the optimal nstlist is >= 10, with GPUs >= 20. Note
+  that with the Verlet scheme, nstlist has no effect on the accuracy of
+  your simulation.
+
+Generated 332520 of the 332520 non-bonded parameter combinations
+Generating 1-4 interactions: fudge = 0.5
+Generated 332520 of the 332520 1-4 parameter combinations
+Excluding 4 bonded neighbours molecule type 'Protein'
+Removing all charge groups because cutoff-scheme=Verlet
+
+NOTE 2 [file topol.top, line 21]:
+  In moleculetype 'Protein' 4 atoms are not bound by a potential or
+  constraint to any other atom in the same moleculetype. Although
+  technically this might not cause issues in a simulation, this often means
+  that the user forgot to add a bond/potential/constraint or put multiple
+  molecules in the same moleculetype definition by mistake. Run with -v to
+  get information for each atom.
+
+Rotation group 0 'system' has 4 atoms
+Number of degrees of freedom in T-Coupling group rest is 9.00
+
+NOTE 3 [file ./grompp.mdp]:
+  NVE simulation with an initial temperature of zero: will use a Verlet
+  buffer of 10%. Check your energy drift!
+
+Enforced rotation: group 0 has 4 reference positions.
+  Reading them from rotref.0.trr.
+trr version: GMX_trn_file (single precision)
+
+There were 3 notes
+
+Thanx for Using GROMACS - Have a Nice Day
+
