@@ -15,11 +15,11 @@ The whole-application benchmark can be run directly with a regular production bu
 
 The benchmark can be run directly with a regular production build of CP2K as follows:
 
-mpirun -n 24 cp2k.popt -in force-opt-qmmm.in
+`mpirun -n 24 cp2k.popt -in force-opt-qmmm.in`
 
 Or, to redirect output from stdout to file for future reference:
 
-mpirun -n 24 cp2k.popt -in force-opt-qmmm.in > force-opt-qmmm.out
+`mpirun -n 24 cp2k.popt -in force-opt-qmmm.in > force-opt-qmmm.log`
 
 The number of MPI ranks (24 in the above example) should be adjusted to be equal to the number of available cores.
 

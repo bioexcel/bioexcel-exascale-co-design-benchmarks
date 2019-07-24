@@ -16,22 +16,22 @@ As well as being motivated by performance profiling results for the whole-applic
 
 ## Requirements
 
-The benchmark kernel is entirely self contained - the kernel code itself (qmmm_gpw_forces.f90), a  wrapper (kernel_benchmark.f90), some dependencies adapted from the CP2K codebase, and input files corresponding to the whole-application benchmark also contained in this repository are all included (more information in src/README.md and data/README.md). All that is required to build the kernel benchmark is a Fortran 2008-compatible compiler (gfortran is recommended, as it is for CP2K as a whole). If a Fortran 2008-compatible compiler is not available, you will have to modify a few file IO statements in src/kernel_benchmark.f90 to not make use of the 'newunit' feature. The code runs serially so no MPI library is required. The kernel benchmark has negligible memory requirements (~20MB memory high watermark). 
+The benchmark kernel is entirely self contained - the kernel code itself (`qmmm_gpw_forces.f90`), a  wrapper (`kernel_benchmark.f90`), some dependencies adapted from the CP2K codebase, and input files corresponding to the whole-application benchmark also contained in this repository are all included (more information in `./src/README.md` and `./data/README.md`). All that is required to build the kernel benchmark is a Fortran 2008-compatible compiler (gfortran is recommended, as it is for CP2K as a whole). If a Fortran 2008-compatible compiler is not available, you will have to modify a few file IO statements in `./src/kernel_benchmark.f90` to not make use of the 'newunit' feature. The code runs serially so no MPI library is required. The kernel benchmark has negligible memory requirements (~20MB memory high watermark). 
 
 ## How to build
 
 - In the Makefile in this directory, specify a Fortran compiler that supports Fortran 2008 (), and specify an optimisation level by setting FCFLAGS
 
-- Type 'make'
+- Type `make`
 
 - The resulting executable kernel_benchmark will now appear in this directory
 
-- 'make clean' can be executed in this directory to clear all object and module files as well as the kernel_benchmark executable
+- `make clean` can be executed in this directory to clear all object and module files as well as the `kernel_benchmark` executable
 
 ## How to run
 
-The executable kernel_benchmark should be run without any input parameters. It expects the data subdirectory to be located in the working directory where it executes. The executable prints out times obtained using calls to system_clock() to time the initialisation and the time spent running the kernel. 
+The executable `kernel_benchmark` should be run without any input parameters. It expects the `data` subdirectory included in this repository to be located in the working directory where it executes. The executable prints out times obtained using calls to `system_clock()` to time the initialisation and the time spent running the kernel. 
 
 ## Checking results and expected runtime
 
-A reference output file ./data/Forces.out is provided against which any Forces.out produced by running the benchmark can be compared using the diff command. The reference output was produced by compiling with gfortran version 8.2.0 with -g and default optimisation level (-O0) and running the benchmark on a single core of a quad-core Intel i7-3820QM@2.7GHz on a macOS laptop, for which the kernel call takes just over 3 minutes. No difference in Forces.out was encountered when running on the same platform with -O3, for which the kernel call takes around 60 seconds. Running on a single core of an Intel E5-2697v2@2.7GHz processor on an HPC compute node obtains similar timings, taking 2 minutes 34 seconds with -O0 and 53 seconds with -O3. 
+A reference output file `./outputs/Forces.out` is provided against which any `Forces.out` produced by running the benchmark can be compared using the `diff` command. The reference output was produced by compiling with gfortran version 8.2.0 with `-g` and default optimisation level (`-O0`) and running the benchmark on a single core of a quad-core Intel i7-3820QM@2.7GHz on a macOS laptop, for which the kernel call takes just over 3 minutes. No difference in `Forces.out` was encountered when running on the same platform with `-O3`, for which the kernel call takes around 60 seconds. Running on a single core of an Intel E5-2697v2@2.7GHz processor on an HPC compute node obtains similar timings, taking 2 minutes 34 seconds with `-O0` and 53 seconds with `-O3`. 
