@@ -20,7 +20,7 @@ The benchmark kernel is entirely self contained - the kernel code itself (`qmmm_
 
 ## How to build
 
-- In the Makefile in this directory, specify a Fortran compiler that supports Fortran 2008 (), and specify an optimisation level by setting FCFLAGS
+- In the Makefile in this directory, specify a Fortran compiler that supports Fortran 2008 (in particular the `newunit` IO feature), and specify an optimisation level by setting FCFLAGS (e.g. to `-O3`)
 
 - Type `make`
 
