@@ -16,6 +16,7 @@ Containing:
 * other code from the CP2K codebase (e.g. Fortran type specifications) required to compile the kernel code.
 * guidance on how to build and run the kernel benchmark.
 * reference output of the kernel benchmark.
+* code that was used to generate input data for the kernel benchmark and that can be used to reproduce these or to adapt the kernel benchmark to different whole-application inputs or simulation parameters
 
 ## Maintainer
 
