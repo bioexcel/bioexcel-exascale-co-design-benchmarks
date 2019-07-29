@@ -14,7 +14,7 @@ Compared to currently common simulations of photoactive systems this benchmark i
 
 
 ### 
-[1] https://bioexcel.eu/research/projects/electronic-interaction-phenomena-proton-dynamics-and-fluorescent-proteins/
+[1] https://bioexcel.eu/research/projects/electronic-interaction-phenomena-proton-dynamics-and-fluorescent-proteins
 [2] An Efficient Real Space Multigrid QM/MM Electrostatic Coupling. Laino, T.; Mohamed, F.; Laio, A.; Parrinello, M.  J. Chem. Theory Comput. 2005, 1, 1176-1184. https://doi.org/10.1021/ct050123f  
 [3] An Efficient Linear-Scaling Electrostatic Coupling for Treating Periodic Boundary Conditions in QM/MM Simulations. Laino, T.; Mohamed, F. Laio, A. and Parrinello, M. J. Chem. Theory Comput. 2006 2 (5), 1370-1378 https://doi.org/10.1021/ct6001169  
 
