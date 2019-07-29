@@ -34,16 +34,22 @@ Note: OpenMP-threading was not found to yield any performance advantage for this
 
 ## Expected runtimes and reference outputs
 
-Running on 24 cores on a CRAY XC30 compute node (two 12-core Intel E5-2697v2@2.7GHz processors) using a production build of CP2K, the benchmark takes around 200 seconds to complete and uses less than 1GB of memory per rank (memory high watermark) with a total requirement of at most 16GB at any given time during the simulation. Runtimes and maximum total memory requirements on a range of numbers of cores on the same platform, including across two compute nodes for 48 cores, are given in the table below:
+Running on 24 cores (two 12-core Intel E5-2697v2@2.7GHz processors) on a single compute node of ARCHER (a CRAY XC30 machine) using a production build of CP2K, the benchmark takes around 200 seconds to complete and uses less than 1GB of memory per rank (memory high watermark) with a total requirement of at most 16GB at any given time during the simulation. Runtimes and maximum total memory requirements on a range of numbers of cores on the same platform, including across two compute nodes for 48 cores, are given in the table below:
 
-| cores | runtime (s) | memory (GB) |
-| ----- | ----------- | ----------- |
-| 48    | 145         | 26	    |
-| 24    | 203         | 16	    |
-| 12    | 322         | 7	    |
-| 6     | 539         | 2.7	    |
-| 2     | 1392        | 1.3	    |
-| 1     | 2657        | 0.6	    |
+| cores | runtime (s) | speedup     | parallel efficiency (%) | total memory required (GB) |
+| ----- | ----------- | ----------- | ----------------------- | -------------------------- |
+| 1     | 2657        | 1	    | 100		      | 0.6	    		   |
+| 2     | 1392        | 1.9	    | 95		      | 1.3	    		   |
+| 6     | 539         | 4.9	    | 82		      | 2.7	    		   |
+| 12    | 322         | 8.3	    | 69		      | 7	    		   |
+| 24    | 203         | 13.0	    | 54	    	      | 16			   |
+| 48    | 145         | 18.3	    | 38		      | 26			   |
+
+
+
+
+
+
 
 Reference output log files are included in the `outputs` directory. 
 
