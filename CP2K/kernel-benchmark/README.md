@@ -2,20 +2,16 @@
 
 ## Description
 
-The CP2K QM/MM kernel benchmark provided here runs the most expensive subroutine identified during profiling of the whole-application biomolecular QM/MM benchmark specified in this repository under `../whole-application-benchmark`, namely `qmmm_forces_with_gaussian_LG`. This is by far the most costly single subroutine in the execution of the whole-application benchmark, taking almost 30% of overall runtime when running at a reasonable parallel scale.
+The CP2K QM/MM kernel benchmark provided here runs the most expensive subroutine identified during profiling of the whole-application biomolecular QM/MM benchmark specified in this repository under `../whole-application-benchmark`, namely `qmmm_forces_with_gaussian_LG`. This is by far the most costly single subroutine in the execution of the whole-application benchmark, taking almost 30% of overall runtime when running at a reasonable parallel scale. It is similar in form to the first part of the subroutine that computes the corresponding forces (`qmmm_elec_with_gaussian_LG`), which is also the next most expensive subroutine during execution of the whole-application benchmark. Any optimisations found to speed up the kernel benchmark are therefore likely to also yield improvement in the QM/MM energies subroutine and hence taken together in almost half of the overall execution time when running at a reasonably efficient parallel scale.
 
-The subroutine computes the force contributions due to the long-range electrostatic interaction between QM and MM regions. It does this by treating the QM-MM coupling using the method of multigrids and Gaussian Expansion of the QM/MM Electrostatic Potential (GEEP) described in [2] and taking into account periodic boundary conditions as described in [3]. It is similar in form to the first part of the subroutine that computes the corresponding forces (`qmmm_elec_with_gaussian_LG`), which is also the next most expensive subroutine during execution of the whole-application benchmark. Any optimisations found to speed up the kernel benchmark are therefore likely to also yield improvement in the QM/MM energies subroutine and hence taken together in almost half of the overall execution time when running at a reasonably efficient parallel scale and in a larger share of overall execution time on smaller numbers of cores.
+The kernel subroutine computes the force contributions due to the long-range electrostatic interaction between QM and MM regions. It does this by treating the QM-MM coupling using the method of multigrids and Gaussian Expansion of the QM/MM Electrostatic Potential (GEEP) described in [1] and taking into account periodic boundary conditions as described in [2]. 
 
 During regular execution of CP2K running the whole-application benchmark each MPI rank - one per core - executes the kernel subroutine independently without any communication between processes taking place within the call. Moreover,  execution times are almost identical between ranks. The code provided for the kernel benchmark therefore runs the kernel subroutine in serial in a way that is fully representative of a single MPI rank in the parallel execution context. Optimisations within the kernel subroutine should benefit performance of each rank and thereby directly overall runtime if changes are integrated back into the full application.
 
 
 ### References
-[1] https://www.cp2k.org/docs  
-[2] An Efficient Real Space Multigrid QM/MM Electrostatic Coupling. Laino, T.; Mohamed, F.; Laio, A.; Parrinello, M.  J. Chem. Theory Comput. 2005, 1, 1176-1184. https://doi.org/10.1021/ct050123f  
-[3] An Efficient Linear-Scaling Electrostatic Coupling for Treating Periodic Boundary Conditions in QM/MM Simulations. Laino, T.; Mohamed, F. Laio, A. and Parrinello, M. J. Chem. Theory Comput. 2006 2 (5), 1370-1378 https://doi.org/10.1021/ct6001169  
-[4] https://www.cp2k.org/performance  
-[5] https://repository.prace-ri.eu/git/UEABS/ueabs  
-[6] https://www.cp2k.org/dev:profiling
+[1] An Efficient Real Space Multigrid QM/MM Electrostatic Coupling. Laino, T.; Mohamed, F.; Laio, A.; Parrinello, M.  J. Chem. Theory Comput. 2005, 1, 1176-1184. https://doi.org/10.1021/ct050123f  
+[2] An Efficient Linear-Scaling Electrostatic Coupling for Treating Periodic Boundary Conditions in QM/MM Simulations. Laino, T.; Mohamed, F. Laio, A. and Parrinello, M. J. Chem. Theory Comput. 2006 2 (5), 1370-1378 https://doi.org/10.1021/ct6001169  
 
 ## Requirements
 
