@@ -51,7 +51,7 @@ TEST(EnsembleHistogramPotentialPlugin, ForceCalc)
     experimental{{0, 1, 0, 0, 0, 0, 0, 0, 0, 0}};
 
 
-    plugin::EnsembleHarmonic restraint{10, // nbins
+    plugin::EnsemblePotential restraint{10, // nbins
                                     1.0, // binWidth
                                     0.0, // minDist
                                     10.0, // maxDist
@@ -94,30 +94,6 @@ TEST(EnsembleHistogramPotentialPlugin, ForceCalc)
     ASSERT_EQ(static_cast<real>(0.0), norm(calculateForce(e1, e1, 0.001)));
     */
 }
-
-// This should be part of a validation test, not a unit test.
-//TEST(HarmonicPotentialPlugin, Bind)
-//{
-//
-//    {
-//        std::string waterfile = "water.tpr";
-//        auto system = gmxapi::fromTprFile(waterfile);
-//        std::shared_ptr<gmxapi::Context> context = gmxapi::defaultContext();
-//
-//        auto module = std::make_shared<plugin::HarmonicModule>();
-//        module->setParams(1, 4, 2.0, 100.0);
-//        system->setRestraint(module);
-//
-//        auto session = system->launch(context);
-//
-//        gmxapi::Status status;
-//        ASSERT_NO_THROW(status = session->run());
-////        ASSERT_TRUE(module->force_called() > 0);
-////        ASSERT_NO_THROW(session->run(1000));
-//        ASSERT_TRUE(status.success());
-//    }
-//
-//}
 
 } // end anonymous namespace
 

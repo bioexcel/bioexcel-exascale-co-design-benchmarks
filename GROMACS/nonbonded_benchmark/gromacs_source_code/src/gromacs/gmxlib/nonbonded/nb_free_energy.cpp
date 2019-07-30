@@ -128,18 +128,15 @@ nb_free_energy_kernel(const t_nblist * gmx_restrict    nlist,
     real *        fshift;
     const real *  x;
     real *        f;
-    real          facel, krf, crf;
     const real *  chargeA;
     const real *  chargeB;
     real          sigma6_min, sigma6_def, lam_power;
     real          alpha_coul, alpha_vdw, lambda_coul, lambda_vdw;
-    real          sh_lj_ewald;
     const real *  nbfp, *nbfp_grid;
     real *        dvdl;
     real *        Vv;
     real *        Vc;
     gmx_bool      bDoForces, bDoShiftForces, bDoPotential;
-    real          rcoulomb, rvdw, sh_invrc6;
     gmx_bool      bEwald, bEwaldLJ;
     real          rcutoff_max2;
     const real *  tab_ewald_F_lj = nullptr;
@@ -177,9 +174,6 @@ nb_free_energy_kernel(const t_nblist * gmx_restrict    nlist,
     shiftvec            = fr->shift_vec[0];
     chargeA             = mdatoms->chargeA;
     chargeB             = mdatoms->chargeB;
-    facel               = fr->ic->epsfac;
-    krf                 = ic->k_rf;
-    crf                 = ic->c_rf;
     Vc                  = kernel_data->energygrp_elec;
     typeA               = mdatoms->typeA;
     typeB               = mdatoms->typeB;
@@ -199,10 +193,15 @@ nb_free_energy_kernel(const t_nblist * gmx_restrict    nlist,
     bDoShiftForces      = ((kernel_data->flags & GMX_NONBONDED_DO_SHIFTFORCE) != 0);
     bDoPotential        = ((kernel_data->flags & GMX_NONBONDED_DO_POTENTIAL) != 0);
 
-    rcoulomb            = ic->rcoulomb;
-    rvdw                = ic->rvdw;
-    sh_invrc6           = ic->sh_invrc6;
-    sh_lj_ewald         = ic->sh_lj_ewald;
+    // Extract data from interaction_const_t
+    const real facel           = ic->epsfac;
+    const real rcoulomb        = ic->rcoulomb;
+    const real krf             = ic->k_rf;
+    const real crf             = ic->c_rf;
+    const real sh_lj_ewald     = ic->sh_lj_ewald;
+    const real rvdw            = ic->rvdw;
+    const real dispersionShift = ic->dispersion_shift.cpot;
+    const real repulsionShift  = ic->repulsion_shift.cpot;
 
     // Note that the nbnxm kernels do not support Coulomb potential switching at all
     GMX_ASSERT(ic->coulomb_modifier != eintmodPOTSWITCH,
@@ -254,12 +253,13 @@ nb_free_energy_kernel(const t_nblist * gmx_restrict    nlist,
 
     if (bEwald || bEwaldLJ)
     {
+        const auto &tables = *ic->coulombEwaldTables;
         sh_ewald       = ic->sh_ewald;
-        ewtab          = ic->tabq_coul_FDV0;
-        ewtabscale     = ic->tabq_scale;
+        ewtab          = tables.tableFDV0.data();
+        ewtabscale     = tables.scale;
         ewtabhalfspace = half/ewtabscale;
-        tab_ewald_F_lj = ic->tabq_vdw_F;
-        tab_ewald_V_lj = ic->tabq_vdw_V;
+        tab_ewald_F_lj = tables.tableF.data();
+        tab_ewald_V_lj = tables.tableV.data();
     }
 
     /* For Ewald/PME interactions we cannot easily apply the soft-core component to
@@ -541,8 +541,8 @@ nb_free_energy_kernel(const t_nblist * gmx_restrict    nlist,
                             Vvdw6            = c6[i]*rinv6;
                             Vvdw12           = c12[i]*rinv6*rinv6;
 
-                            Vvdw[i]          = ( (Vvdw12 - c12[i]*sh_invrc6*sh_invrc6)*onetwelfth
-                                                 - (Vvdw6 - c6[i]*sh_invrc6)*onesixth);
+                            Vvdw[i]          = ( (Vvdw12 + c12[i]*repulsionShift)*onetwelfth
+                                                 - (Vvdw6 + c6[i]*dispersionShift)*onesixth);
                             FscalV[i]        = Vvdw12 - Vvdw6;
 
                             if (bEwaldLJ)

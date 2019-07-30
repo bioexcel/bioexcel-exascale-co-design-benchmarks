@@ -197,7 +197,7 @@ void registerLegacyModules(gmx::CommandLineModuleManager *manager)
     registerModuleNoNice(manager, &gmx::gmx_mdrun, "mdrun",
                          "Perform a simulation, do a normal mode analysis or an energy minimization");
 
-    registerModuleNoNice(manager, &gmx::gmx_nonbonded_bench, "nonbonded_bench",
+    registerModuleNoNice(manager, &gmx::gmx_nonbonded_bench, "nonbonded_benchmark",
                          "Benchmarking tool for the non-bonded pair kernels");
 
     gmx::ICommandLineOptionsModule::registerModuleFactory(

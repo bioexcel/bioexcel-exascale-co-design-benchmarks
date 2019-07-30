@@ -16,9 +16,9 @@
 ARG REF=latest
 FROM gmxapi/ci-mpich:$REF
 
-RUN . $HOME/testing/bin/activate && \
+RUN . $VENV/bin/activate && \
     pip install --no-cache-dir jupyter
 
-ADD --chown=testing:testing notebook /home/testing/scripts/
+ADD --chown=testing:testing notebook /docker_entry_points
 
 CMD ["notebook"]

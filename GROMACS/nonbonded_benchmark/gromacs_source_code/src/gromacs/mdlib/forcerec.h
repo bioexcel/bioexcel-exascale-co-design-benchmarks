@@ -50,6 +50,7 @@ struct t_commrec;
 struct t_fcdata;
 struct t_filenm;
 struct t_inputrec;
+struct gmx_gpu_info_t;
 
 namespace gmx
 {
@@ -90,11 +91,9 @@ forcerec_set_ranges(t_forcerec *fr,
  * Initializes the tables in the interaction constant data structure.
  * \param[in] fp   File for debugging output
  * \param[in] ic   Structure holding the table constant
- * \param[in] rtab The additional distance to add to tables
  */
 void init_interaction_const_tables(FILE                   *fp,
-                                   interaction_const_t    *ic,
-                                   real                    rtab);
+                                   interaction_const_t    *ic);
 
 /*! \brief Initialize forcerec structure.
  *
@@ -141,15 +140,8 @@ void init_forcerec(FILE                             *fplog,
 void forcerec_set_excl_load(t_forcerec           *fr,
                             const gmx_localtop_t *top);
 
-/*! \brief Update parameters dependent on box
- *
- * Updates parameters in the forcerec that are time dependent
- * \param[out] fr  The force record
- * \param[in]  box The simulation box
- */
-void update_forcerec(t_forcerec *fr, matrix box);
-
 void free_gpu_resources(t_forcerec                          *fr,
-                        const gmx::PhysicalNodeCommunicator &physicalNodeCommunicator);
+                        const gmx::PhysicalNodeCommunicator &physicalNodeCommunicator,
+                        const gmx_gpu_info_t                &gpu_info);
 
 #endif

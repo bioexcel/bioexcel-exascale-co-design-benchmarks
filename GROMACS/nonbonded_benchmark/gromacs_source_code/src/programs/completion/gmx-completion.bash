@@ -979,7 +979,7 @@ case "$p" in
 -v) (( $n <= 1 )) && COMPREPLY=( $(compgen -S ' ' -X '!*@(.trr|.cpt|.tng)?(.gz|.Z)' -f -- $c ; compgen -S '/' -d $c));;
 -o) (( $n <= 1 )) && COMPREPLY=( $(compgen -S ' ' -X '!*@(.xtc|.trr|.gro|.g96|.pdb|.tng)?(.gz|.Z)' -f -- $c ; compgen -S '/' -d $c));;
 esac }
-_gmx_nonbonded_bench_compl() {
+_gmx_nonbonded_benchmark_compl() {
 local IFS=$'\n'
 local c=${COMP_WORDS[COMP_CWORD]}
 local n
@@ -1707,7 +1707,7 @@ unset COMP_WORDS[i]
 done
 if (( i == COMP_CWORD )); then
 c=${COMP_WORDS[COMP_CWORD]}
-COMPREPLY=( $(compgen -S ' ' -W $'-h\n-quiet\n-version\n-nocopyright\n-nice\n-nobackup\nanaeig\nanalyze\nangle\nawh\nbar\nbundle\ncheck\nchi\ncluster\nclustsize\nconfrms\nconvert-tpr\ncovar\ncurrent\ndensity\ndensmap\ndensorder\ndielectric\ndipoles\ndisre\ndistance\ndo_dssp\ndos\ndump\ndyecoupl\neditconf\neneconv\nenemat\nenergy\nfilter\nfreevolume\ngangle\ngenconf\ngenion\ngenrestr\ngrompp\ngyrate\nh2order\nhbond\nhelix\nhelixorient\nhelp\nhydorder\ninsert-molecules\nlie\nmake_edi\nmake_ndx\nmdmat\nmdrun\nmindist\nmk_angndx\nmsd\nnmeig\nnmens\nnmr\nnmtraj\nnonbonded_bench\norder\npairdist\npdb2gmx\npme_error\npolystat\npotential\nprincipal\nrama\nrdf\nreport-methods\nrms\nrmsdist\nrmsf\nrotacf\nrotmat\nsaltbr\nsans\nsasa\nsaxs\nselect\nsham\nsigeps\nsolvate\nsorient\nspatial\nspol\ntcaf\ntraj\ntrajectory\ntrjcat\ntrjconv\ntrjorder\ntune_pme\nvanhove\nvelacc\nview\nwham\nwheel\nx2top\nxpm2ps' -- $c) )
+COMPREPLY=( $(compgen -S ' ' -W $'-h\n-quiet\n-version\n-nocopyright\n-nice\n-nobackup\nanaeig\nanalyze\nangle\nawh\nbar\nbundle\ncheck\nchi\ncluster\nclustsize\nconfrms\nconvert-tpr\ncovar\ncurrent\ndensity\ndensmap\ndensorder\ndielectric\ndipoles\ndisre\ndistance\ndo_dssp\ndos\ndump\ndyecoupl\neditconf\neneconv\nenemat\nenergy\nfilter\nfreevolume\ngangle\ngenconf\ngenion\ngenrestr\ngrompp\ngyrate\nh2order\nhbond\nhelix\nhelixorient\nhelp\nhydorder\ninsert-molecules\nlie\nmake_edi\nmake_ndx\nmdmat\nmdrun\nmindist\nmk_angndx\nmsd\nnmeig\nnmens\nnmr\nnmtraj\nnonbonded_benchmark\norder\npairdist\npdb2gmx\npme_error\npolystat\npotential\nprincipal\nrama\nrdf\nreport-methods\nrms\nrmsdist\nrmsf\nrotacf\nrotmat\nsaltbr\nsans\nsasa\nsaxs\nselect\nsham\nsigeps\nsolvate\nsorient\nspatial\nspol\ntcaf\ntraj\ntrajectory\ntrjcat\ntrjconv\ntrjorder\ntune_pme\nvanhove\nvelacc\nview\nwham\nwheel\nx2top\nxpm2ps' -- $c) )
 return 0
 fi
 m=${COMP_WORDS[i]}
@@ -1770,7 +1770,7 @@ nmeig) _gmx_nmeig_compl ;;
 nmens) _gmx_nmens_compl ;;
 nmr) _gmx_nmr_compl ;;
 nmtraj) _gmx_nmtraj_compl ;;
-nonbonded_bench) _gmx_nonbonded_bench_compl ;;
+nonbonded_benchmark) _gmx_nonbonded_benchmark_compl ;;
 order) _gmx_order_compl ;;
 pairdist) _gmx_pairdist_compl ;;
 pdb2gmx) _gmx_pdb2gmx_compl ;;

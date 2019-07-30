@@ -45,6 +45,7 @@
 
 #include "bench_setup.h"
 
+#include "gromacs/compat/optional.h"
 #include "gromacs/gmxlib/nrnb.h"
 #include "gromacs/mdlib/dispersioncorrection.h"
 #include "gromacs/mdlib/force_flags.h"
@@ -73,12 +74,11 @@
 namespace Nbnxm
 {
 
-/*! \brief Sets the kernel setup
- * Returns an empty string when the kernel is available.
- * Returns the reason why a kernel is not available when unavailabe.
+/*! \brief Checks the kernel setup
+ *
+ * Returns an error string when the kernel is not available.
  */
-static std::string setKernelSetup(const KernelBenchOptions &options,
-                                  KernelSetup              *kernelSetup)
+static gmx::compat::optional<std::string> checkKernelSetup(const KernelBenchOptions &options)
 {
     GMX_RELEASE_ASSERT(options.nbnxmsimd >= 2 && options.nbnxmsimd < 5, "Need a valid kernel SIMD type");
 
@@ -95,19 +95,31 @@ static std::string setKernelSetup(const KernelBenchOptions &options,
         return "the requested SIMD kernel was not set up at configuration time";
     }
 
+    return {};
+}
+
+/*! \brief Returns the kernel setup
+ */
+static KernelSetup getKernelSetup(const KernelBenchOptions &options)
+{
+    auto messageWhenInvalid = checkKernelSetup(options);
+    GMX_RELEASE_ASSERT(!messageWhenInvalid, "Need valid options");
+
+    KernelSetup kernelSetup;
+
     //The int enum options.nbnxnsimd is set up to match KernelType + 1
-    kernelSetup->kernelType         = static_cast<KernelType>(options.nbnxmsimd - 1);
+    kernelSetup.kernelType         = static_cast<KernelType>(options.nbnxmsimd - 1);
     // The plain-C kernel does not support analytical ewald correction
-    if (kernelSetup->kernelType == KernelType::Cpu4x4_PlainC)
+    if (kernelSetup.kernelType == KernelType::Cpu4x4_PlainC)
     {
-        kernelSetup->ewaldExclusionType = EwaldExclusionType::Table;
+        kernelSetup.ewaldExclusionType = EwaldExclusionType::Table;
     }
     else
     {
-        kernelSetup->ewaldExclusionType = options.useTabulatedEwaldCorr ? EwaldExclusionType::Table : EwaldExclusionType::Analytical;
+        kernelSetup.ewaldExclusionType = options.useTabulatedEwaldCorr ? EwaldExclusionType::Table : EwaldExclusionType::Analytical;
     }
 
-    return "";
+    return kernelSetup;
 }
 
 //! Return an interaction constants struct with members used in the benchmark set appropriately
@@ -115,7 +127,6 @@ static interaction_const_t setupInteractionConst(const KernelBenchOptions &optio
 
 {
     interaction_const_t ic;
-    memset(&ic, 0, sizeof(interaction_const_t));
 
     ic.vdwtype          = evdwCUT;
     ic.vdw_modifier     = eintmodPOTSHIFT;
@@ -126,6 +137,7 @@ static interaction_const_t setupInteractionConst(const KernelBenchOptions &optio
     ic.rcoulomb         = options.pairlistCutoff;
 
     // Reaction-field with epsilon_rf=inf
+    // TODO: Replace by calc_rffac() after refactoring that
     ic.k_rf             = 0.5*std::pow(ic.rcoulomb, -3);
     ic.c_rf             = 1/ic.rcoulomb + ic.k_rf*ic.rcoulomb*ic.rcoulomb;
 
@@ -134,6 +146,8 @@ static interaction_const_t setupInteractionConst(const KernelBenchOptions &optio
         // Ewald coefficients, we ignore the potential shift
         GMX_RELEASE_ASSERT(options.ewaldcoeff_q > 0, "Ewald coefficient should be > 0");
         ic.ewaldcoeff_q  = options.ewaldcoeff_q;
+
+        init_interaction_const_tables(nullptr, &ic);
     }
 
     return ic;
@@ -149,13 +163,13 @@ setupNbnxmForBenchInstance(const KernelBenchOptions &options,
     // Note: the options and Nbnxm combination rule enums values should match
     const int          combinationRule = options.ljCombinationRule;
 
-    Nbnxm::KernelSetup kernelSetup;
-    std::string        unavailableReason = setKernelSetup(options, &kernelSetup);
-    if (!unavailableReason.empty())
+    auto               messageWhenInvalid = checkKernelSetup(options);
+    if (messageWhenInvalid)
     {
         gmx_fatal(FARGS, "Requested kernel is unavailable because %s.",
-                  unavailableReason.c_str());
+                  messageWhenInvalid->c_str());
     }
+    Nbnxm::KernelSetup kernelSetup = getKernelSetup(options);
 
     PairlistParams     pairlistParams(kernelSetup.kernelType, false, options.pairlistCutoff, false);
 
@@ -260,6 +274,7 @@ static void setupAndRunInstance(const BenchmarkSystem    &system,
                                 const KernelBenchOptions &options,
                                 const bool                doWarmup)
 {
+    // Generate an, accurate, estimate of the number of non-zero pair interactions
     const real                          atomDensity          = system.coordinates.size()/det(system.box);
     const real                          numPairsWithinCutoff = atomDensity*4.0/3.0*M_PI*std::pow(options.pairlistCutoff, 3);
     const real                          numUsefulPairs       = system.coordinates.size()*0.5*(numPairsWithinCutoff + 1);
@@ -268,14 +283,12 @@ static void setupAndRunInstance(const BenchmarkSystem    &system,
 
     // We set the interaction cut-off to the pairlist cut-off
     interaction_const_t   ic = setupInteractionConst(options);
-    init_interaction_const_tables(nullptr, &ic, options.pairlistCutoff);
 
-    t_nrnb nrnb;
-    memset(&nrnb, 0, sizeof(t_nrnb));
+    t_nrnb                nrnb = { 0 };
 
-    gmx_enerdata_t enerd(1, 0);
+    gmx_enerdata_t        enerd(1, 0);
 
-    int            forceFlags = GMX_FORCE_FORCES;
+    int                   forceFlags = GMX_FORCE_FORCES;
     if (options.computeVirialAndEnergy)
     {
         forceFlags |= GMX_FORCE_VIRIAL | GMX_FORCE_ENERGY;
@@ -318,16 +331,16 @@ static void setupAndRunInstance(const BenchmarkSystem    &system,
     cycles = gmx_cycles_read() - cycles;
     if (!doWarmup)
     {
+        const double dCycles = static_cast<double>(cycles);
         if (options.cyclesPerPair)
         {
             fprintf(stdout, "%10.3f %8.4f %8.4f\n",
                     cycles*1e-6,
-                    static_cast<double>(cycles)/(options.numIterations*numPairs),
-                    static_cast<double>(cycles)/(options.numIterations*numUsefulPairs));
+                    dCycles/(options.numIterations*numPairs),
+                    dCycles/(options.numIterations*numUsefulPairs));
         }
         else
         {
-            double dCycles = static_cast<double>(cycles);
             fprintf(stdout, "%10.3f %10.4f %8.4f %8.4f\n",
                     dCycles*1e-6,
                     dCycles/options.numIterations*1e-6,

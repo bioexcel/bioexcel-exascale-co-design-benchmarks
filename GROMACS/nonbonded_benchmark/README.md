@@ -19,7 +19,7 @@ Build exactly as you would build a production version of GROMACS.  See
 the INSTALL file in the gromacs_source_code subdirectory for details.
 
 This code is based on a development version of GROMACS between 2019
-and 2020 (commit 2d5c92e674173 from gerrit.gromacs.org), so there is
+and 2020 (commit 219d24220e5e552 from gerrit.gromacs.org), so there is
 no official regressiontest suite for it. If you want to run the tests
 with "make check", please direct CMake to use the version of the
 regressiontest suite contained in this repository, e.g.  with
