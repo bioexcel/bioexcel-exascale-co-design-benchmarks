@@ -11,7 +11,7 @@
 # The sha1sum and sha256sum for the tarball is computed and reported
 # so we can put that on the BioExcel webpage easily.
 
-version=0.1.0
+version=1.0.0
 tarball_prefix=BioExcel-co-design-benchmarks
 tarball_name=$tarball_prefix-$version.tgz
 dir_name=bioexcel-exascale-co-design-benchmarks
