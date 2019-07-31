@@ -30,7 +30,7 @@ mkdir build
 cd build
 cmake .. -DREGRESSIONTEST_PATH=../../gromacs_regressiontests
 make check
-bin/gmx nonbonded_bench
+bin/gmx nonbonded_benchmark
 ```
 
 ## Maintainers
