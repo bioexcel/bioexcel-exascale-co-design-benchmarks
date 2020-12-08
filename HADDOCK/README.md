@@ -121,6 +121,36 @@ In order to evaluate this scenario we created a python script named `calc-batch-
 2. Calculate the HADDOCK score and 
 3. Write a sorted list which represents the final ranking. 
 
+
+# Timing examples
+
+To exemplify the volume of I/O that is executed during HADDOCK simulations, we wrote a first prototype in Python to extract the energetic terms from the header of the different files and to calculate the HADDOCK score. The timing tests were executed using the Linux native time command on two setups:
+
+1) Linux server, running Scientific Linux 6.3 - 8x2.8 GHz AMD 6320, 64 GB memory, with a 10TB RAID6 system (LSI MegaRAID SAS 9270-8i - x8 PCI Express 3.0 host interface; 12 Hitachi Ultrastar C10K900 900GB 2.5" SAS 6Gb/s 10KRPM 64MB); 
+
+2) Linux server running CentOS 7 - 8x2.20 GHz Intel Xeon E5-2650, 128GB memory (8x16GB DDR4-2400MHz ECC Registered DIMM - Dual Rank) and 1 SSD 960GB disk (Kingston HyperX Predator 960 GB I - PCI Express interface with NVMe protocol). 
+
+
+__Timing results [h : m : s] and I/O events on 10TB RAID6 system:__
+
+| Subset | User  | System  | Real  | Filesystem<br>input I/O events | Filesystem<br>output I/O events |
+|--:|---|---|---|--:|--:|
+| 250'000 | 00:00:48  | 00:00:20 | 00:23:41 | 6,939,112 | 17,624 |
+| 500'000 | 00:01:23  | 00:00:30 | 00:33:34 | 8,240,824 | 35,256 |
+| 750'000 | 00:02:31  | 00:01:05 | 01:25:32 | 22,478,552 | 52,832 |
+| 1'000'000 | 00:03:28 | 00:01:36 | 02:15:42 | 32,265,832 | 70,472 |
+
+
+__Timing results [h : m : s] and I/O events on 960GB SSD PCI disk:__
+
+| Subset | User  | System  | Real  | Filesystem<br>input I/O events | Filesystem<br>output I/O events |
+|--:|---|---|---|--:|--:|
+| 250'000 | 00:00:22  | 00:00:10 | 00:01:02 | 8,011,504 | 28,336 |
+| 500'000 | 00:00:34  | 00:00:12 | 00:01:18 | 8,003,000 | 56,664 |
+| 750'000 | 00:00:46  | 00:00:16 | 00:01:33 | 9,963,880 | 85,000 |
+| 1'000'000 | 00:00:50 | 00:00:15 | 00:01:22 | 8,003,016 | 113,328 |
+
+
 ***
 
 This benchmark was created by Rodrigo Honorato and Alexandre Bonvin @ Utrecht University // [BonvinLab](http://www.bonvinlab.org)
