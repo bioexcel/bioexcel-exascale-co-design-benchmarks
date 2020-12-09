@@ -58,6 +58,9 @@ details
 
 nonbonded_benchmark provides a tool for observing the performance of
 production versions of key GROMACS kernels on real CPU hardware.
+Here the whole GROMACS source code is provides, which includes this
+tool and all its dependencies. See nonbonded_benchmark/README.md
+for more details.
 
 ## kernel_microbenchmark
 
@@ -65,3 +68,6 @@ kernel_microbenchmark provides a much simpler set of code that runs a
 single version of one such kernel. It does so in a form suitable for
 running a single iteration in a CPU processor simulator without the
 prohibitive cost of running the full application in the simulator.
+This includes only the kernel codes itself, minimal input data
+and the GROMACS SIMD library. See kernel_microbenchmark/README.md
+for more details.
